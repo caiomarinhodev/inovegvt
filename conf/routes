@@ -1,0 +1,33 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET         /                             controllers.Application.index
+GET         /register                     controllers.Application.renderRegister
+GET         /logout                       controllers.Application.logout
+GET         /block                        controllers.Application.telaBloqueio
+GET         /chamadas/add                 controllers.Application.renderAdd
+GET         /chamadas/pendentes/:i        controllers.Application.renderListChamadasPendentesDoUsuario(i: Integer)
+GET         /chamadas/list/:i             controllers.Application.renderListChamadasGeralDoUsuario(i: Integer)
+
+
+GET         /admin/chamadas/:i            controllers.Application.renderListChamadasGeralAdmin(i: Integer)
+GET         /admin/clientes/:i            controllers.Application.renderListClientesGeralAdmin(i: Integer)
+
+
+
+
+POST        /signin                       controllers.Application.register
+POST        /auth                         controllers.Application.auth
+POST        /enter                        controllers.Application.enter
+POST        /addchamada                   controllers.Application.addChamada
+
+
+
+
+
+# Map static resources from the /public folder to the /assets URL path
+GET         /assets/*file                 controllers.Assets.at(path="/public/assets/", file)
+
+    
