@@ -28,32 +28,12 @@ public class Global extends GlobalSettings {
 
                 List<Usuario> lis = dao.findAllByClassName(Usuario.class.getName());
                 if (lis.size() == 0) {
-                    Usuario u = new Usuario("Administrador", "a@a.com", "a",1);
+                    Usuario u = new Usuario("Administrador", "administrador@administrador.com", "administrador",1);
 
-                    Usuario t1 = new Usuario("t1", "t1","t1",0);
-                    Usuario t2 = new Usuario("t2", "t2","t2",0);
+                    Usuario t1 = new Usuario("Teste", "teste@teste.com","teste",0);
 
                     dao.persist(u);
                     dao.persist(t1);
-                    dao.persist(t2);
-
-                    for(int i=0;i<500;i++){
-                        Cliente c = new Cliente("c"+i,"8888-8888","","","Rua "+i,"Campina Grande",
-                                "PB", "PLANO 1", "106.986.464-10", "");
-                        dao.persist(c);
-                        Chamada ch = new Chamada(c, "okok","","",0,t1,new GregorianCalendar(),"","");
-                        dao.persist(ch);
-                    }
-
-                    for(int i=0;i<1000;i++){
-                        Cliente cl = new Cliente("cl"+i,"8888-8888","","","Rua "+i,"Campina Grande",
-                                "PB", "PLANO 1", "106.986.464-10", "");
-                        dao.persist(cl);
-                        Chamada cha = new Chamada(cl, "okok","","",0,t2,new GregorianCalendar(),"","");
-                        dao.persist(cha);
-                    }
-
-
                     dao.flush();
                     Logger.info("Inserindo dados no BD.");
                 }
