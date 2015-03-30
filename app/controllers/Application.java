@@ -284,6 +284,47 @@ public class Application extends Controller {
         return renderListChamadasPendentesDoUsuario(1);
     }
 
+    @Transactional
+    public static Result renderUpdateChamada(Long id){
+        Usuario u = Sistema.getUsuario(session().get("email"));
+        Chamada c = Sistema.getChamada(id);
+        return ok(dashUserUpdateChamada.render(u,c));
+    }
+
+    @Transactional
+    public static Result updateChamada(){
+        Usuario u = Sistema.getUsuario(session().get("email"));
+        DynamicForm r = Form.form().bindFromRequest();
+        String end = r.get("endereco");
+        String cid = r.get("cidade");
+        String plan = r.get("plano");
+        String nota = r.get("notas");
+        String data = r.get("data");
+        String hora = r.get("hora");
+        int stat = Integer.parseInt(r.get("status"));
+        Long id = Long.parseLong(r.get("id"));
+        if(id!=null){
+            Chamada c = Sistema.getChamada(id);
+            Cliente cl = Sistema.getCliente(c.getIdCliente());
+            if(c!=null && cl!=null){
+                c.setDataAgendamento(data);
+                c.setHoraAgendamento(hora);
+                c.setNota(nota);
+                c.setStatus(stat);
+                cl.setEndereco(end);
+                cl.setCidade(cid);
+                cl.setPlanoGVT(plan);
+                Sistema.mergeCliente(cl);
+                Sistema.mergeChamada(c);
+                return renderListChamadasPendentesDoUsuario(1);
+            }
+        }
+        return renderListChamadasPendentesDoUsuario(1);
+
+
+
+    }
+
 
 
 }

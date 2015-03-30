@@ -1,9 +1,6 @@
 package controllers;
 
-import models.Chamada;
-import models.Cliente;
-import models.GenericDAO;
-import models.Usuario;
+import models.*;
 import play.db.jpa.Transactional;
 
 import java.util.*;
@@ -98,6 +95,15 @@ public class Sistema {
     @Transactional
     public static Cliente getCliente(Long id){
         List<Cliente> l = dao.findByAttributeName(Cliente.class.getName(),"id",String.valueOf(id));
+        if(l.size()>0){
+            return l.get(0);
+        }
+        return null;
+    }
+
+    @Transactional
+    public static Cliente getCliente(String cpf){
+        List<Cliente> l = dao.findByAttributeName(Cliente.class.getName(),"cpf", cpf);
         if(l.size()>0){
             return l.get(0);
         }
@@ -292,5 +298,48 @@ public class Sistema {
             return ((tcfo*100)/tco);
         }
         return 0;
+    }
+
+    @Transactional
+    public static boolean addPlano(String text, double value){
+        Plano p = new Plano(text,value);
+        if(p!=null){
+            dao.persist(p);
+            dao.flush();
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional
+    public static Plano getPlano(Long id){
+        List<Plano> l = dao.findByAttributeName(Plano.class.getName(),"id",String.valueOf(id));
+        if(l.size()>0){
+            return l.get(0);
+        }
+        return  null;
+    }
+
+    @Transactional
+    public static boolean removePlano(Long id){
+        Plano p = getPlano(id);
+        if(p!=null){
+            dao.remove(p);
+            dao.flush();
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional
+    public static void mergeCliente(Cliente c){
+        dao.merge(c);
+        dao.flush();
+    }
+
+    @Transactional
+    public static void mergeChamada(Chamada c){
+        dao.merge(c);
+        dao.flush();
     }
 }

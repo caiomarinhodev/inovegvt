@@ -8,6 +8,7 @@ GET         /register                     controllers.Application.renderRegister
 GET         /logout                       controllers.Application.logout
 GET         /block                        controllers.Application.telaBloqueio
 GET         /chamadas/add                 controllers.Application.renderAdd
+GET         /chamadas/update/:id          controllers.Application.renderUpdateChamada(id: Long)
 GET         /chamadas/pendentes/:i        controllers.Application.renderListChamadasPendentesDoUsuario(i: Integer)
 GET         /chamadas/list/:i             controllers.Application.renderListChamadasGeralDoUsuario(i: Integer)
 
@@ -22,6 +23,8 @@ POST        /signin                       controllers.Application.register
 POST        /auth                         controllers.Application.auth
 POST        /enter                        controllers.Application.enter
 POST        /addchamada                   controllers.Application.addChamada
+POST        /chamadas/update/new          controllers.Application.updateChamada
+
 
 
 
