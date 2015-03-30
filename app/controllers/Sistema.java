@@ -52,8 +52,8 @@ public class Sistema {
     }
 
     @Transactional
-    public static boolean addChamada(Chamada c){
-        if(c!=null){
+    public static boolean addChamada(Chamada c) {
+        if (c != null) {
             dao.persist(c);
             dao.flush();
             return true;
@@ -62,18 +62,18 @@ public class Sistema {
     }
 
     @Transactional
-    public static Chamada getChamada(Long id){
-        List<Chamada> l = dao.findByAttributeName(Chamada.class.getName(),"id",String.valueOf(id));
-        if(l.size()>0){
+    public static Chamada getChamada(Long id) {
+        List<Chamada> l = dao.findByAttributeName(Chamada.class.getName(), "id", String.valueOf(id));
+        if (l.size() > 0) {
             return l.get(0);
         }
         return null;
     }
 
     @Transactional
-    public static boolean removeChamada(Long id){
+    public static boolean removeChamada(Long id) {
         Chamada c = getChamada(id);
-        if(c!=null){
+        if (c != null) {
             dao.remove(c);
             dao.flush();
             return true;
@@ -83,8 +83,8 @@ public class Sistema {
 
 
     @Transactional
-    public static boolean addCliente(Cliente c){
-        if(c!=null){
+    public static boolean addCliente(Cliente c) {
+        if (c != null) {
             dao.persist(c);
             dao.flush();
             return true;
@@ -93,27 +93,27 @@ public class Sistema {
     }
 
     @Transactional
-    public static Cliente getCliente(Long id){
-        List<Cliente> l = dao.findByAttributeName(Cliente.class.getName(),"id",String.valueOf(id));
-        if(l.size()>0){
+    public static Cliente getCliente(Long id) {
+        List<Cliente> l = dao.findByAttributeName(Cliente.class.getName(), "id", String.valueOf(id));
+        if (l.size() > 0) {
             return l.get(0);
         }
         return null;
     }
 
     @Transactional
-    public static Cliente getCliente(String cpf){
-        List<Cliente> l = dao.findByAttributeName(Cliente.class.getName(),"cpf", cpf);
-        if(l.size()>0){
+    public static Cliente getCliente(String cpf) {
+        List<Cliente> l = dao.findByAttributeName(Cliente.class.getName(), "cpf", cpf);
+        if (l.size() > 0) {
             return l.get(0);
         }
         return null;
     }
 
     @Transactional
-    public static boolean removeCliente(Long id){
+    public static boolean removeCliente(Long id) {
         Cliente c = getCliente(id);
-        if(c!=null){
+        if (c != null) {
             dao.remove(c);
             dao.flush();
             return true;
@@ -122,44 +122,44 @@ public class Sistema {
     }
 
     @Transactional
-    public static List<Cliente> getListaGeralDeClientes(){
+    public static List<Cliente> getListaGeralDeClientes() {
         return dao.findAllByClassName(Cliente.class.getName());
     }
 
     @Transactional
-    public static List<Chamada> getListaGeralDeChamadas(){
+    public static List<Chamada> getListaGeralDeChamadas() {
         return dao.findAllByClassName(Chamada.class.getName());
     }
 
     @Transactional
-    public static List<Usuario> getListaGeralDeUsuarios(){
+    public static List<Usuario> getListaGeralDeUsuarios() {
         return dao.findAllByClassName(Usuario.class.getName());
     }
 
     @Transactional
-    public static List<Chamada> getListaDeChamadasGeraldoUsuario(Usuario u){
-        return dao.findByAttributeName(Chamada.class.getName(),"idOperador", String.valueOf(u.getId()));
+    public static List<Chamada> getListaDeChamadasGeraldoUsuario(Usuario u) {
+        return dao.findByAttributeName(Chamada.class.getName(), "idOperador", String.valueOf(u.getId()));
     }
 
     @Transactional
-    public static void addChamada(String nome, String num1,String endereco, String cidade, String uf, String plano,
-                                  String nota,String cpf, String rg,String horainicial, String horafinal,
-                                  int status, Usuario operador, String dt, String h){
-        Cliente cliente = new Cliente(nome,num1,null,null,endereco,cidade,
-                uf,plano,cpf,rg);
-        if(addCliente(cliente)){
-            Chamada c = new Chamada(cliente,nota,horainicial,horafinal,status,operador,new GregorianCalendar(),dt,h);
+    public static void addChamada(String nome, String num1, String endereco, String cidade, String uf, String plano,
+                                  String nota, String cpf, String rg, String horainicial, String horafinal,
+                                  int status, Usuario operador, String dt, String h) {
+        Cliente cliente = new Cliente(nome, num1, null, null, endereco, cidade,
+                uf, plano, cpf, rg);
+        if (addCliente(cliente)) {
+            Chamada c = new Chamada(cliente, nota, horainicial, horafinal, status, operador, new GregorianCalendar(), dt, h);
             addChamada(c);
         }
     }
 
     @Transactional
-    public static List<Chamada> getListaChamadasPendentesDoUsuario(Usuario u){
+    public static List<Chamada> getListaChamadasPendentesDoUsuario(Usuario u) {
         List<Chamada> l = getListaDeChamadasGeraldoUsuario(u);
         List<Chamada> li = new ArrayList<>();
-        for(Chamada c: l){
+        for (Chamada c : l) {
             int k = c.getStatus();
-            if(k==0 || k==1 || k==2 || k==3 || k==6){
+            if (k == 0 || k == 1 || k == 2 || k == 3 || k == 6) {
                 li.add(c);
             }
         }
@@ -167,46 +167,46 @@ public class Sistema {
     }
 
     @Transactional
-    public static int getIndiceChamadasPendentesDoUsuario(Usuario u){
+    public static int getIndiceChamadasPendentesDoUsuario(Usuario u) {
         List<Chamada> l = getListaChamadasPendentesDoUsuario(u);
         int total = l.size();
-        int resto = total%30;
-        float conta = ((float)l.size())/(float)30;
-        if(conta>1 && resto==0){
-            return ( l.size()/30);
-        }else if(conta>1 && resto!=0){
-            return ( l.size()/30)+1;
-        }else{
+        int resto = total % 30;
+        float conta = ((float) l.size()) / (float) 30;
+        if (conta > 1 && resto == 0) {
+            return (l.size() / 30);
+        } else if (conta > 1 && resto != 0) {
+            return (l.size() / 30) + 1;
+        } else {
             return 1;
         }
     }
 
     @Transactional
-    public static int getPorcentagemChamadasTotaisDoUsuario(Usuario u){
+    public static int getPorcentagemChamadasTotaisDoUsuario(Usuario u) {
         int tu = getListaDeChamadasGeraldoUsuario(u).size();
         int t = getListaGeralDeChamadas().size();
-        if(t!=0){
-            return ((tu*100)/t);
+        if (t != 0) {
+            return ((tu * 100) / t);
         }
         return 0;
     }
 
     @Transactional
-    public static int getPorcentagemChamadasPendentsDoUsuario(Usuario u){
+    public static int getPorcentagemChamadasPendentsDoUsuario(Usuario u) {
         int tu = getListaChamadasPendentesDoUsuario(u).size();
         int t = getListaDeChamadasGeraldoUsuario(u).size();
-        if(t!=0){
-            return ((tu*100)/t);
+        if (t != 0) {
+            return ((tu * 100) / t);
         }
         return 0;
     }
 
     @Transactional
-    public static List<Chamada> getListaDeChamadasAgendadasDoUsuario(Usuario u){
+    public static List<Chamada> getListaDeChamadasAgendadasDoUsuario(Usuario u) {
         List<Chamada> l = getListaDeChamadasGeraldoUsuario(u);
         List<Chamada> li = new ArrayList<>();
-        for(Chamada c: l){
-            if(c.getStatus()==1){
+        for (Chamada c : l) {
+            if (c.getStatus() == 1) {
                 li.add(c);
             }
         }
@@ -214,21 +214,21 @@ public class Sistema {
     }
 
     @Transactional
-    public static int getPorcentagemChamadasAgendadasDoUsuario(Usuario u){
+    public static int getPorcentagemChamadasAgendadasDoUsuario(Usuario u) {
         int tu = getListaDeChamadasAgendadasDoUsuario(u).size();
         int t = getListaDeChamadasGeraldoUsuario(u).size();
-        if(t!=0){
-            return ((tu*100)/t);
+        if (t != 0) {
+            return ((tu * 100) / t);
         }
         return 0;
     }
 
     @Transactional
-    public static List<Chamada> getListaDeChamadasFechadasDoUsuario(Usuario u){
+    public static List<Chamada> getListaDeChamadasFechadasDoUsuario(Usuario u) {
         List<Chamada> l = getListaDeChamadasGeraldoUsuario(u);
         List<Chamada> li = new ArrayList<>();
-        for(Chamada c: l){
-            if(c.getStatus()==8){
+        for (Chamada c : l) {
+            if (c.getStatus() == 8) {
                 li.add(c);
             }
         }
@@ -236,74 +236,135 @@ public class Sistema {
     }
 
     @Transactional
-    public static int getPorcentagemChamadasFechadasDoUsuario(Usuario u){
+    public static int getPorcentagemChamadasFechadasDoUsuario(Usuario u) {
         int tu = getListaDeChamadasFechadasDoUsuario(u).size();
         int t = getListaDeChamadasGeraldoUsuario(u).size();
-        if(t!=0){
-            return ((tu*100)/t);
+        if (t != 0) {
+            return ((tu * 100) / t);
         }
         return 0;
     }
 
     @Transactional
-    public static int getIndiceChamadasAdminTable(){
+    public static int getIndiceChamadasAdminTable() {
         List<Chamada> l = getListaGeralDeChamadas();
         int total = l.size();
-        int resto = total%30;
-        float conta = ((float)l.size())/(float)30;
-        if(conta>1 && resto==0){
-            return ( l.size()/30);
-        }else if(conta>1 && resto!=0){
-            return ( l.size()/30)+1;
-        }else{
+        int resto = total % 30;
+        float conta = ((float) l.size()) / (float) 30;
+        if (conta > 1 && resto == 0) {
+            return (l.size() / 30);
+        } else if (conta > 1 && resto != 0) {
+            return (l.size() / 30) + 1;
+        } else {
             return 1;
         }
     }
 
     @Transactional
-    public static int getIndiceChamadasDoUsuario(Usuario u){
+    public static int getIndiceChamadasDoUsuario(Usuario u) {
         List<Chamada> l = getListaDeChamadasGeraldoUsuario(u);
         int total = l.size();
-        int resto = total%30;
-        float conta = ((float)l.size())/(float)30;
-        if(conta>1 && resto==0){
-            return ( l.size()/30);
-        }else if(conta>1 && resto!=0){
-            return ( l.size()/30)+1;
-        }else{
+        int resto = total % 30;
+        float conta = ((float) l.size()) / (float) 30;
+        if (conta > 1 && resto == 0) {
+            return (l.size() / 30);
+        } else if (conta > 1 && resto != 0) {
+            return (l.size() / 30) + 1;
+        } else {
             return 1;
         }
     }
 
+    public static String getDataCurrent(){
+        return new Date().toLocaleString();
+    }
+
     @Transactional
-    public static int getIndiceClientesAdminTable(){
+    public static int getIndiceClientesAdminTable() {
         List<Cliente> l = getListaGeralDeClientes();
         int total = l.size();
-        int resto = total%30;
-        float conta = ((float)l.size())/(float)30;
-        if(conta>1 && resto==0){
-            return ( l.size()/30);
-        }else if(conta>1 && resto!=0){
-            return ( l.size()/30)+1;
-        }else{
+        int resto = total % 30;
+        float conta = ((float) l.size()) / (float) 30;
+        if (conta > 1 && resto == 0) {
+            return (l.size() / 30);
+        } else if (conta > 1 && resto != 0) {
+            return (l.size() / 30) + 1;
+        } else {
             return 1;
         }
     }
 
     @Transactional
-    public static int getEfetividadeDoUsuario(Usuario u){
+    public static float getEfetividadeDoUsuario(Usuario u) {
         int tco = getListaDeChamadasGeraldoUsuario(u).size();
         int tcfo = getListaDeChamadasFechadasDoUsuario(u).size();
-        if(tco!=0){
-            return ((tcfo*100)/tco);
+        if (tco != 0) {
+            return (((float) tcfo * 100) / (float) tco);
         }
         return 0;
     }
 
     @Transactional
-    public static boolean addPlano(String text, double value){
-        Plano p = new Plano(text,value);
-        if(p!=null){
+    public static float getEfetividadeChamadasTotaisDoUsuario(Usuario u) {
+        int tc = getListaGeralDeChamadas().size();
+        int tco = getListaDeChamadasGeraldoUsuario(u).size();
+        if (tc != 0) {
+            float c =  (((float) tco * 100) / (float) tc);
+            return (int) c;
+        }
+        return 0;
+    }
+
+    @Transactional
+    public static int getNumRowsDiv() {
+        int to = getListaGeralDeUsuarios().size();
+        int resto = to % 4;
+        float conta = ((float) to) / (float) 4;
+        if (conta > 1 && resto == 0) {
+            return (to / 4);
+        } else if (conta > 1 && resto != 0) {
+            return (to / 4) + 1;
+        } else {
+            return 1;
+        }
+    }
+
+    @Transactional
+    public static boolean hasResto(){
+        int to = getListaGeralDeUsuarios().size();
+        int resto = to % 4;
+        float conta = ((float) to) / (float) 4;
+        if (conta > 1 && resto == 0) {
+            return false;
+        } else if (conta > 1 && resto != 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    public static String gerColorRandom(){
+        List<String> l = new ArrayList<>();
+        l.add("#3c8dbc");
+        l.add("#f56954");
+        l.add("#8dbc3c");
+        l.add("#bc3c8d");
+        l.add("#6b3cbc");
+        l.add("#3cbc6b");
+        l.add("#03f55c");
+        l.add("#a32c60");
+        l.add("#00a65a");
+        l.add("#00c0ef");
+        Random gerador = new Random();
+        int x = gerador.nextInt(10);
+        return l.get(x);
+    }
+
+    @Transactional
+    public static boolean addPlano(String text, double value) {
+        Plano p = new Plano(text, value);
+        if (p != null) {
             dao.persist(p);
             dao.flush();
             return true;
@@ -312,18 +373,18 @@ public class Sistema {
     }
 
     @Transactional
-    public static Plano getPlano(Long id){
-        List<Plano> l = dao.findByAttributeName(Plano.class.getName(),"id",String.valueOf(id));
-        if(l.size()>0){
+    public static Plano getPlano(Long id) {
+        List<Plano> l = dao.findByAttributeName(Plano.class.getName(), "id", String.valueOf(id));
+        if (l.size() > 0) {
             return l.get(0);
         }
-        return  null;
+        return null;
     }
 
     @Transactional
-    public static boolean removePlano(Long id){
+    public static boolean removePlano(Long id) {
         Plano p = getPlano(id);
-        if(p!=null){
+        if (p != null) {
             dao.remove(p);
             dao.flush();
             return true;
@@ -332,13 +393,13 @@ public class Sistema {
     }
 
     @Transactional
-    public static void mergeCliente(Cliente c){
+    public static void mergeCliente(Cliente c) {
         dao.merge(c);
         dao.flush();
     }
 
     @Transactional
-    public static void mergeChamada(Chamada c){
+    public static void mergeChamada(Chamada c) {
         dao.merge(c);
         dao.flush();
     }

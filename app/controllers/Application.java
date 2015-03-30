@@ -25,7 +25,7 @@ public class Application extends Controller {
             if(u.getTipo()==1){
                 session().clear();
                 session().put("email",email);
-                return ok();
+                return renderListChamadasGeralAdmin(1);
             }else{
                 session().clear();
                 session().put("email",email);
@@ -79,7 +79,7 @@ public class Application extends Controller {
             if(u.getTipo()==1){
                 session().clear();
                 session().put("email",email);
-                return ok();
+                return renderListChamadasGeralAdmin(1);
             }else{
                 session().clear();
                 session().put("email",email);
@@ -139,6 +139,12 @@ public class Application extends Controller {
             }
         }
         return ok();
+    }
+
+    @Transactional
+    public static Result renderOperadores(){
+        Usuario u = Sistema.getUsuario(session().get("email"));
+        return ok(dashAdminOperadores.render(u, Sistema.getListaGeralDeUsuarios()));
     }
 
     @Transactional

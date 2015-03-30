@@ -15,6 +15,7 @@ GET         /chamadas/list/:i             controllers.Application.renderListCham
 
 GET         /admin/chamadas/:i            controllers.Application.renderListChamadasGeralAdmin(i: Integer)
 GET         /admin/clientes/:i            controllers.Application.renderListClientesGeralAdmin(i: Integer)
+GET         /admin/operadores             controllers.Application.renderOperadores
 
 
 

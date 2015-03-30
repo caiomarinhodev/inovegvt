@@ -28,7 +28,7 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body class="skin-blue">
+  <body class="skin-yellow">
     <div class="wrapper">
       
       <header class="main-header">
@@ -95,8 +95,8 @@
                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
               </a>
             </li>
-            <li><a href="/chamadas/add"><i class="fa fa-circle-o text-warning"></i>Add Chamada</a></li>
-            <li><a href="/chamadas/list/1"><i class="fa fa-circle-o text-info"></i> Chamadas</a></li>
+            <li><a href="/chamadas/add"><i class="fa fa-plus-square text-warning"></i>Add Chamada</a></li>
+            <li><a href="/chamadas/list/1"><i class="fa fa-phone text-info"></i> Chamadas</a></li>
           </ul>
         </section>
         <!-- /.sidebar -->
@@ -145,7 +145,7 @@
                               <div class="progress-bar" style="width: @Sistema.getPorcentagemChamadasPendentsDoUsuario(usuario)%"></div>
                           </div>
                   <span class="progress-description">
-                    @Sistema.getPorcentagemChamadasPendentsDoUsuario(usuario)% em relação as chamadas.
+                    @Sistema.getPorcentagemChamadasPendentsDoUsuario(usuario)% pendentes.
                   </span>
                       </div><!-- /.info-box-content -->
                   </div><!-- /.info-box -->
@@ -192,7 +192,7 @@
                             <div class="box-tools">
                                 <ul class="pagination pagination-sm no-margin pull-right">
                                     @for(i <- 1 to Sistema.getIndiceChamadasPendentesDoUsuario(usuario)){
-                                    <li><a href="/chamadas/pendentes/:i">@i</a></li>
+                                    <li><a href="/chamadas/pendentes/@i">@i</a></li>
                                     }
                                 </ul>
                             </div>
