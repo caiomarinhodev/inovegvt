@@ -28,9 +28,11 @@ public class Global extends GlobalSettings {
 
                 List<Usuario> lis = dao.findAllByClassName(Usuario.class.getName());
                 if (lis.size() == 0) {
-                    Usuario u = new Usuario("Administrador", "administrador@administrador.com", "administrador",1);
+                    Usuario u = new Usuario("Administrador", "administrador@administrador.com", "administrador",1,
+                            "http://www.malibuhomesforsalerent.com/wp-content/themes/RealEstate/images/dummy/user.jpg");
 
-                    Usuario t1 = new Usuario("Teste", "teste@teste.com","teste",0);
+                    Usuario t1 = new Usuario("Teste", "teste@teste.com","teste",0,
+                            "http://www.malibuhomesforsalerent.com/wp-content/themes/RealEstate/images/dummy/user.jpg");
 
                     dao.persist(u);
                     dao.persist(t1);

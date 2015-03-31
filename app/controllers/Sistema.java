@@ -151,10 +151,10 @@ public class Sistema {
     }
 
     @Transactional
-    public static void addChamada(String nome, String num1, String endereco, String cidade, String uf, String plano,
+    public static void addChamada(String nome, String num1, String num2, String endereco, String cidade, String uf, String plano,
                                   String nota, String cpf, String rg, String horainicial, String horafinal,
                                   int status, Usuario operador, String dt, String h, String cep) {
-        Cliente cliente = new Cliente(nome, num1, null, null, endereco, cidade,
+        Cliente cliente = new Cliente(nome, num1, num2, null, endereco, cidade,
                 uf, plano, cpf, rg,cep);
         if (addCliente(cliente)) {
             Chamada c = new Chamada(cliente, nota, horainicial, horafinal, status, operador, new GregorianCalendar(), dt, h);
@@ -393,6 +393,27 @@ public class Sistema {
     @Transactional
     public static List<Plano> getListaDePlanos(){
         return dao.findAllByClassName(Plano.class.getName());
+    }
+
+    @Transactional
+    public static int getUsedBD(){
+        int ch = getListaGeralDeChamadas().size();
+        int c = getListaGeralDeClientes().size();
+        int p = getListaDePlanos().size();
+        int u = getListaGeralDeUsuarios().size();
+        return (ch+c+p+u);
+    }
+
+    @Transactional
+    public static int getPercentUsedBD(){
+        int n = getUsedBD();
+        return ((n*100)/10000);
+    }
+
+    @Transactional
+    public static double getPercentFree(){
+        float k = 100;
+        return (k-getPercentUsedBD());
     }
 
     @Transactional

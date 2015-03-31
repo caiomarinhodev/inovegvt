@@ -22,16 +22,27 @@ public class Usuario {
     private String senha;
     @Column
     private int tipo;
+    @Column
+    private String url_foto;
 
-    public Usuario(){
+    public Usuario() {
 
     }
 
-    public Usuario(String nome, String email, String senha, int tipo) {
+    public Usuario(String nome, String email, String senha, int tipo, String foto) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
         this.tipo = tipo;
+        this.url_foto = foto;
+    }
+
+    public String getUrl_foto() {
+        return url_foto;
+    }
+
+    public void setUrl_foto(String url_foto) {
+        this.url_foto = url_foto;
     }
 
     public Long getId() {

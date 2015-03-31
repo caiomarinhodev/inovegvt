@@ -99,11 +99,12 @@ public class Application extends Controller {
     @Transactional
     public static Result register() {
         DynamicForm r = Form.form().bindFromRequest();
-        String nome, email, senha;
+        String nome, email, senha, foto;
         nome = r.get("nome");
         email = r.get("email");
         senha = r.get("senha");
-        Usuario u = new Usuario(nome, email, senha, 0);
+        foto = "https://cdn3.iconfinder.com/data/icons/users/100/user_male_1-512.png";
+        Usuario u = new Usuario(nome, email, senha, 0, foto);
         if (Sistema.addUsuario(u)) {
             return index();
         }
@@ -365,7 +366,7 @@ public class Application extends Controller {
         String hora = r.get("hora");
         String hf = new Date().toLocaleString();
         int stat = Integer.parseInt(r.get("status"));
-        Sistema.addChamada(nome, num1, end, cid, uf, plan, nota, cpf, rg, hi, hf, stat, u, data, hora,cep);
+        Sistema.addChamada(nome, num1, num2, end, cid, uf, plan, nota, cpf, rg, hi, hf, stat, u, data, hora,cep);
         return renderListChamadasPendentesDoUsuario(1);
     }
 
@@ -374,6 +375,13 @@ public class Application extends Controller {
         Usuario u = Sistema.getUsuario(session().get("email"));
         Chamada c = Sistema.getChamada(id);
         return ok(dashUserUpdateChamada.render(u, c));
+    }
+
+    @Transactional
+    public static Result renderUpdateChamadaAdmin(Long id) {
+        Usuario u = Sistema.getUsuario(session().get("email"));
+        Chamada c = Sistema.getChamada(id);
+        return ok(dashAdminUpdateChamada.render(u, c));
     }
 
     @Transactional
@@ -405,8 +413,18 @@ public class Application extends Controller {
             }
         }
         return renderListChamadasPendentesDoUsuario(1);
+    }
 
-
+    @Transactional
+    public static Result renderUsersControl(){
+        Usuario u = Sistema.getUsuario(session().get("email"));
+        return ok(dashAdminUsuarios.render(u,Sistema.getListaGeralDeUsuarios()));
+    }
+    @Transactional
+    public static Result deleteUsuario(Long id){
+        Usuario u = Sistema.getUsuario(session().get("email"));
+        Sistema.removeUsuario(id);
+        return renderUsersControl();
     }
 
 

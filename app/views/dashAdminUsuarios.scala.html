@@ -1,4 +1,4 @@
-@(usuario: Usuario, planos: List[Plano])
+@(usuario: Usuario, usuarios: List[Usuario])
 <!DOCTYPE html>
 <html>
     <head>
@@ -96,9 +96,9 @@
                         </li>
                         <li><a href="/admin/clientes/1"><i class="fa fa-bar-chart-o text-warning"></i>Clientes</a></li>
                         <li><a href="/admin/operadores"><i class="fa fa-rocket text-info"></i>Operadores</a></li>
-                        <li class="active treeview"><a href="/admin/add"><i class="fa fa-plus-square text-danger"></i>
+                        <li><a href="/admin/add"><i class="fa fa-plus-square text-danger"></i>
                             Add Plano</a></li>
-                        <li><a href="/admin/users"><i class="fa fa-users"></i>Usuários</a> </li>
+                        <li class="active treeview"><a href="/admin/users"><i class="fa fa-users"></i>Usuários</a> </li>
                     </ul>
                 </section>
                     <!-- /.sidebar -->
@@ -110,82 +110,141 @@
                 <section class="content-header">
                     <h1>
                         Dashboard
-                        <small>Adicionar Plano</small>
+                        <small>Usuários</small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                        <li class="active">Add Plano</li>
+                        <li class="active">Usuários</li>
                     </ol>
                 </section>
 
                     <!-- Main content -->
                 <section class="content">
                         <!-- Main row -->
-
-                    <div class="col-md-6">
-                            <!-- general form elements -->
-                        <div class="box box-primary">
-                            <div class="box-header">
-                                <h3 class="box-title">Adicionar Plano</h3>
-                            </div><!-- /.box-header -->
-                            <!-- form start -->
-                            <form action="/admin/add/plano" method="post">
-                                <div class="box-body">
-                                    <div class="form-group">
-                                        <label>Plano:</label>
-                                        <input name="plano" type="text" class="form-control" placeholder="Digite aqui o seu plano...">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Valor:</label>
-                                        <input name="valor" type="text" class="form-control" placeholder="129,90">
-                                    </div>
-                                </div><!-- /.box-body -->
-
-                                <div class="box-footer">
-                                    <center><button type="submit" class="btn btn-primary">Submit</button></center>
-                                </div>
-                            </form>
-                        </div><!-- /.box -->
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="">
-                            <div class="box">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="box box-primary">
                                 <div class="box-header">
-                                    <h3 class="box-title">Tabela de Planos</h3>
+                                    <h3 class="box-title">Lista de Usuários</h3>
                                 </div>
                                     <!-- /.box-header -->
                                 <div class="box-body no-padding">
                                     <table class="table table-striped">
                                         <tr>
-                                            <th style="width: 10px">#</th>
-                                            <th>Plano</th>
-                                            <th>Valor</th>
-                                            <th style="width: 15px">?</th>
+                                            <th style="width : 10 px">#</th>
+                                            <th>Usuário</th>
+                                            <th>Email</th>
+                                            <th>Senha</th>
+                                            <th style="width : 15 px">?</th>
                                         </tr>
-                                        @for(p <- planos){
+                                        @for(u <- usuarios) {
                                             <tr>
-                                                <td>@p.getId</td>
-                                                <td>@p.getText</td>
+                                                <td>@u.getId</td>
+                                                <td>@u.getNome</td>
                                                 <td>
-                                                @p.getValue
+                                                @u.getEmail
                                                 </td>
-                                                <td><a href="/admin/remove/@p.getId"><i class="fa fa-trash"></i></a></td>
+                                                <td>@u.getSenha</td>
+                                                <td><a href="/admin/users/remove/@u.getId"><i class="fa fa-trash"></i></a></td>
                                             </tr>
                                         }
                                     </table>
                                 </div>
                                     <!-- /.box-body -->
                             </div>
-                                <!-- /.box -->
                         </div>
-                            <!-- /.col -->
 
-                    </div>
+                        <div class="col-md-6">
+                            <div class="box box-primary collapsed-box">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Usuários</h3>
+                                    <div class="box-tools pull-right">
+                                        <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                                    </div>
+                                </div><!-- /.box-header -->
+                                <div class="box-body">
+                                    <ul class="products-list product-list-in-box">
+                                    @for(user <- usuarios) {
+                                        <li class="item">
+                                            <div class="product-img">
+                                                <img src="@user.getUrl_foto" class="user-image" alt="User Image"/>
+                                            </div>
+                                            <div class="product-info">
+                                                <a href="#" class="product-title">@user.getNome <span class="label label-warning pull-right" data-fgColor="@Sistema.gerColorRandom()">
+                                                @Sistema.getListaDeChamadasGeraldoUsuario(user).size()</span></a>
+                                                <span class="product-description">
+                                                @user.getEmail
+                                                </span>
+                                            </div>
+                                        </li> <!-- /.item -->
+                                    }
+                                    </ul>
+                                </div><!-- /.box-body -->
+                            </div><!-- /.box -->
+
+                        </div>
+
+                    </div><!-- /.box -->
 
 
-                </section><!-- /.content -->
-            </div><!-- /.content-wrapper -->
+                    <div class="row">
+
+
+                        <div class="col-md-3">
+                                <!-- Info Boxes Style 2 -->
+                            <div class="info-box bg-yellow">
+                                <span class="info-box-icon"><i class="ion ion-ios-pricetag-outline"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">LIMITE BD</span>
+                                    <span class="info-box-number">10 K</span>
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width : 50 %"></div>
+                                    </div>
+                                </div><!-- /.info-box-content -->
+                            </div>
+                        </div><!-- /.info-box -->
+                        <div class="col-md-3">
+                            <div class="info-box bg-green">
+                                <span class="info-box-icon"><i class="ion ion-ios-heart-outline"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">USADO</span>
+                                    <span class="info-box-number">@Sistema.getUsedBD Rows</span>
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width : @Sistema.getPercentUsedBD %"></div>
+                                    </div>
+                                </div><!-- /.info-box-content -->
+                            </div><!-- /.info-box -->
+                        </div>
+                        <div class="col-md-3">
+                            <div class="info-box bg-red">
+                                <span class="info-box-icon"><i class="ion ion-ios-cloud-download-outline"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">BD Livre</span>
+                                    <span class="info-box-number">@Sistema.getPercentFree <sup style="font-size : 20 px">
+                                        %</sup></span>
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width : @Sistema.getPercentFree %"></div>
+                                    </div>
+                                </div><!-- /.info-box-content -->
+                            </div><!-- /.info-box -->
+                        </div>
+                        <div class="col-md-3">
+                            <div class="info-box bg-aqua">
+                                <span class="info-box-icon"><i class="ion-ios-chatbubble-outline"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Direct Messages</span>
+                                    <span class="info-box-number">163,921</span>
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width : 40 %"></div>
+                                    </div>
+                                </div><!-- /.info-box-content -->
+                            </div><!-- /.info-box -->
+                        </div>
+                    </div><!-- /.col -->
+                </section>
+            </div>
+
+
             <footer class="main-footer">
                 <div class="pull-right hidden-xs">
                     <b>Version</b> 1.0

@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Alterar Chamada</title>
+        <title>Alterar Chamadas</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
             <!-- Bootstrap 3.3.2 -->
         <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -107,14 +107,15 @@
                     <ul class="sidebar-menu">
                         <li class="header">MENU</li>
                         <li>
-                            <a href="/chamadas/pendentes/1">
-                                <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                            <a href="/admin/chamadas/1">
+                                <i class="fa fa-phone-square"></i> <span>Chamadas</span>
                             </a>
                         </li>
-                        <li class="active treeview"><a href="/chamadas/add"><i class="fa fa-plus-square text-warning"></i>
-                            Add Chamada</a>
-                        </li>
-                        <li><a href="/chamadas/list/1"><i class="fa fa-phone text-info"></i> Chamadas</a></li>
+                        <li><a href="/admin/clientes/1"><i class="fa fa-bar-chart-o text-warning"></i>Clientes</a></li>
+                        <li><a href="/admin/operadores"><i class="fa fa-rocket text-info"></i>Operadores</a></li>
+                        <li><a href="/admin/add"><i class="fa fa-plus-square text-danger"></i>
+                            Add Plano</a></li>
+                        <li><a href="/admin/users"><i class="fa fa-users"></i>Usuários</a> </li>
                     </ul>
                 </section>
                     <!-- /.sidebar -->
@@ -157,10 +158,13 @@
                                             value="@Sistema.getCliente(chamada.getIdCliente).getNumero1" disabled/>
                                             <label>Endereço:</label>
                                             <input name="endereco" type="text" class="form-control"
-                                            value="@Sistema.getCliente(chamada.getIdCliente).getEndereco"/>
+                                            value="@Sistema.getCliente(chamada.getIdCliente).getEndereco" disabled/>
+                                            <label>CEP:</label>
+                                            <input name="cep" type="text" class="form-control"
+                                            value="@Sistema.getCliente(chamada.getIdCliente).getCep" disabled/>
                                             <label>Cidade:</label>
                                             <input name="cidade" type="text" class="form-control"
-                                            value="@Sistema.getCliente(chamada.getIdCliente).getCidade"/>
+                                            value="@Sistema.getCliente(chamada.getIdCliente).getCidade" disabled/>
                                             <label>UF:</label>
                                             <select name="uf" class="form-control" disabled>
                                                 <option>@Sistema.getCliente(chamada.getIdCliente).getUf</option>
@@ -178,46 +182,28 @@
                                             <input name="rg" type="text" class="form-control" value="@Sistema.getCliente(chamada.getIdCliente).getRg"
                                             disabled/>
                                             <label>Status:</label>
-                                            <select id="stat" class="form-control" name="status" onclick="f();">
-                                                <option value=0>ABERTO</option>
-                                                <option value=1>AGENDADO</option>
-                                                <option value=2>EM NEGOCIAÇÃO</option>
-                                                <option value=3>NÃO ATENDIDO</option>
-                                                <option value=4>CLIENTE GVT SATISFEITO</option>
-                                                <option value=5>SATISFEITO CONCORRENCIA</option>
-                                                <option value=6>SOS</option>
-                                                <option value=7>REJEITADO</option>
-                                                <option value=8>FECHADO</option>
-                                                <option value=9>NÚMERO INEXISTENTE</option>
-                                            </select>
+                                            <input name="status" type="text" class="form-control"
+                                            value="@chamada.getStatus" disabled/>
                                             <div id="agenda">
                                                 <label>Agendar:</label>
                                                 <div class="input-group">
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
-                                                    <input name="data" id="datemask" type="text" class="form-control" value="@chamada.getDataAgendamento"/>
+                                                    <input type="text" class="form-control" value="@chamada.getDataAgendamento" disabled/>
                                                 </div> <!-- /.input group -->
                                                 <label>Hora:</label>
-                                                <input id="timepicker" name="hora" type="text" class="form-control timepicker" value="@chamada.getHoraAgendamento">
+                                                <input name="hora" type="text" class="form-control" value="@chamada.getHoraAgendamento" disabled/>
                                             </div>
                                             <label>NOTAS:</label>
                                             <textarea name="notas" class="form-control" rows="3"
-                                            value="@chamada.getNota">
+                                            value="@chamada.getNota" disabled>
                                             </textarea>
 
                                             <input type="hidden" name="id" value="@chamada.getId"/>
                                         </div>
                                     </div>
 
-                                        <!-- /.box-body -->
-                                    <center>
-                                        <div class="box-footer col-md-10">
-                                            <button type="submit" class="btn btn-lg btn-primary"><i
-                                            class="fa fa-plus-circle">&nbspAdicionar</i>
-                                            </button>
-                                        </div>
-                                    </center>
                                 </form>
 
                             </div>

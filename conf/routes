@@ -3,35 +3,38 @@
 # ~~~~
 
 # Home page
-GET         /                             controllers.Application.index
-GET         /register                     controllers.Application.renderRegister
-GET         /logout                       controllers.Application.logout
-GET         /block                        controllers.Application.telaBloqueio
-GET         /chamadas/add                 controllers.Application.renderAdd
-GET         /chamadas/update/:id          controllers.Application.renderUpdateChamada(id: Long)
-GET         /chamadas/pendentes/:i        controllers.Application.renderListChamadasPendentesDoUsuario(i: Integer)
-GET         /chamadas/list/:i             controllers.Application.renderListChamadasGeralDoUsuario(i: Integer)
-GET         /chamadas/search              controllers.Application.search
-GET         /chamadas/search/error        controllers.Application.renderError
+GET         /                                 controllers.Application.index
+GET         /register                         controllers.Application.renderRegister
+GET         /logout                           controllers.Application.logout
+GET         /block                            controllers.Application.telaBloqueio
+GET         /chamadas/add                     controllers.Application.renderAdd
+GET         /chamadas/update/:id              controllers.Application.renderUpdateChamada(id: Long)
+GET         /chamadas/pendentes/:i            controllers.Application.renderListChamadasPendentesDoUsuario(i: Integer)
+GET         /chamadas/list/:i                 controllers.Application.renderListChamadasGeralDoUsuario(i: Integer)
+GET         /chamadas/search                  controllers.Application.search
+GET         /chamadas/search/error            controllers.Application.renderError
 
 
-GET         /admin/chamadas/:i            controllers.Application.renderListChamadasGeralAdmin(i: Integer)
-GET         /admin/clientes/:i            controllers.Application.renderListClientesGeralAdmin(i: Integer)
-GET         /admin/operadores             controllers.Application.renderOperadores
-GET         /admin/print                  controllers.Application.renderprint
-GET         /admin/add                    controllers.Application.renderAddPlano
-GET         /admin/remove/:i              controllers.Application.removePlano(i: Long)
+GET         /admin/chamadas/:i                controllers.Application.renderListChamadasGeralAdmin(i: Integer)
+GET         /admin/clientes/:i                controllers.Application.renderListClientesGeralAdmin(i: Integer)
+GET         /admin/chamadas/update/:id        controllers.Application.renderUpdateChamadaAdmin(id: Long)
+GET         /admin/operadores                 controllers.Application.renderOperadores
+GET         /admin/print                      controllers.Application.renderprint
+GET         /admin/add                        controllers.Application.renderAddPlano
+GET         /admin/remove/:i                  controllers.Application.removePlano(i: Long)
+GET         /admin/users                      controllers.Application.renderUsersControl
+GET         /admin/users/remove/:i            controllers.Application.deleteUsuario(i: Long)
 
 
 
 
 
-POST        /signin                       controllers.Application.register
-POST        /auth                         controllers.Application.auth
-POST        /enter                        controllers.Application.enter
-POST        /addchamada                   controllers.Application.addChamada
-POST        /admin/add/plano              controllers.Application.addPlano
-POST        /chamadas/update/new          controllers.Application.updateChamada
+POST        /signin                           controllers.Application.register
+POST        /auth                             controllers.Application.auth
+POST        /enter                            controllers.Application.enter
+POST        /addchamada                       controllers.Application.addChamada
+POST        /admin/add/plano                  controllers.Application.addPlano
+POST        /chamadas/update/new              controllers.Application.updateChamada
 
 
 
@@ -39,6 +42,6 @@ POST        /chamadas/update/new          controllers.Application.updateChamada
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file                 controllers.Assets.at(path="/public/assets/", file)
+GET         /assets/*file                     controllers.Assets.at(path="/public/assets/", file)
 
     

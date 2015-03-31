@@ -45,13 +45,13 @@
               <!-- User Account: style can be found in dropdown.less -->
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <img src="https://cdn3.iconfinder.com/data/icons/users/100/user_male_1-512.png" class="user-image" alt="User Image"/>
+                  <img src="@usuario.getUrl_foto" class="user-image" alt="User Image"/>
                   <span class="hidden-xs">@usuario.getNome</span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
                   <li class="user-header">
-                    <img src="https://cdn3.iconfinder.com/data/icons/users/100/user_male_1-512.png" class="img-circle" alt="User Image" />
+                    <img src="@usuario.getUrl_foto" class="img-circle" alt="User Image" />
                     <p>
                       @usuario.getNome
                     </p>
@@ -78,7 +78,7 @@
           <!-- Sidebar user panel -->
           <div class="user-panel">
             <div class="pull-left image">
-              <img src="https://cdn3.iconfinder.com/data/icons/users/100/user_male_1-512.png" class="img-circle" alt="User Image" />
+              <img src="@usuario.getUrl_foto" class="img-circle" alt="User Image" />
             </div>
             <div class="pull-left info">
               <p>@usuario.getNome</p>
@@ -88,16 +88,17 @@
           </div>
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
-            <li class="header">MENU</li>
-            <li class="active treeview">
-              <a href="/admin/chamadas/1">
-                <i class="fa fa-dashboard"></i> <span>Chamadas</span>
-              </a>
-            </li>
-            <li><a href="/admin/clientes/1"><i class="fa fa-circle-o text-warning"></i>Clientes</a></li>
-            <li><a href="/admin/operadores"><i class="fa fa-circle-o text-info"></i>Operadores</a></li>
-              <li><a href="/admin/add"><i class="fa fa-circle-o text-danger"></i>
+              <li class="header">MENU</li>
+              <li class="active treeview">
+                  <a href="/admin/chamadas/1">
+                      <i class="fa fa-phone-square"></i> <span>Chamadas</span>
+                  </a>
+              </li>
+              <li><a href="/admin/clientes/1"><i class="fa fa-bar-chart-o text-warning"></i>Clientes</a></li>
+              <li><a href="/admin/operadores"><i class="fa fa-rocket text-info"></i>Operadores</a></li>
+              <li><a href="/admin/add"><i class="fa fa-plus-square text-danger"></i>
                   Add Plano</a></li>
+              <li><a href="/admin/users"><i class="fa fa-users"></i>Usuários</a> </li>
           </ul>
         </section>
         <!-- /.sidebar -->
@@ -148,6 +149,7 @@
                                     <th>CPF</th>
                                     <th>Status</th>
                                     <th>Operador</th>
+                                    <th style="width: 15px">?</th>
                                 </tr>
                                 @for(c <- chamadas){
                                     <tr>
@@ -162,6 +164,7 @@
                                         <td>@Sistema.getCliente(c.getIdCliente).getCpf</td>
                                         <td>@c.getStatus</td>
                                         <td>@Sistema.getUsuario(c.getIdOperador).getNome</td>
+                                        <td><a href="/admin/chamadas/update/@c.getId"><i class="fa fa-edit"></i></a></td>
                                     </tr>
                                 }
                             </table>
