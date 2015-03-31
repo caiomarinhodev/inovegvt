@@ -2,6 +2,7 @@ package controllers;
 
 import models.Chamada;
 import models.Cliente;
+import models.Plano;
 import models.Usuario;
 import play.*;
 import play.data.DynamicForm;
@@ -21,14 +22,14 @@ public class Application extends Controller {
     public static Result index() {
         String email = session().get("email");
         Usuario u = Sistema.getUsuario(email);
-        if(u!=null){
-            if(u.getTipo()==1){
+        if (u != null) {
+            if (u.getTipo() == 1) {
                 session().clear();
-                session().put("email",email);
+                session().put("email", email);
                 return renderListChamadasGeralAdmin(1);
-            }else{
+            } else {
                 session().clear();
-                session().put("email",email);
+                session().put("email", email);
                 return renderListChamadasPendentesDoUsuario(1);
             }
         }
@@ -36,26 +37,32 @@ public class Application extends Controller {
     }
 
     @Transactional
-    public static Result logout(){
+    public static Result logout() {
         session().clear();
         return index();
     }
 
     @Transactional
-    public static Result telaBloqueio(){
+    public static Result renderprint() {
+        Usuario u = Sistema.getUsuario(session().get("email"));
+        return ok(print.render(u, Sistema.getListaGeralDeUsuarios()));
+    }
+
+    @Transactional
+    public static Result telaBloqueio() {
         Usuario u = Sistema.getUsuario(session().get("email"));
         return ok(lockscreen.render(u));
     }
 
     @Transactional
-    public static Result enter(){
+    public static Result enter() {
         DynamicForm r = Form.form().bindFromRequest();
         String senha = r.get("senha");
         Usuario u = Sistema.getUsuario(session().get("email"));
-        if(u.getSenha().equals(senha)){
-            if(u.getTipo()==1){
-                return ok();
-            }else{
+        if (u.getSenha().equals(senha)) {
+            if (u.getTipo() == 1) {
+                return renderListChamadasGeralAdmin(1);
+            } else {
                 return renderListChamadasPendentesDoUsuario(1);
             }
 
@@ -64,25 +71,25 @@ public class Application extends Controller {
     }
 
     @Transactional
-    public static Result renderRegister(){
+    public static Result renderRegister() {
         return ok(register.render(""));
     }
 
     @Transactional
-    public static Result auth(){
+    public static Result auth() {
         DynamicForm r = Form.form().bindFromRequest();
         String email, senha;
         email = r.get("email");
         senha = r.get("senha");
         Usuario u = Sistema.getUsuario(email);
-        if(u!=null){
-            if(u.getTipo()==1){
+        if (u != null) {
+            if (u.getTipo() == 1) {
                 session().clear();
-                session().put("email",email);
+                session().put("email", email);
                 return renderListChamadasGeralAdmin(1);
-            }else{
+            } else {
                 session().clear();
-                session().put("email",email);
+                session().put("email", email);
                 return renderListChamadasPendentesDoUsuario(1);
             }
         }
@@ -90,28 +97,28 @@ public class Application extends Controller {
     }
 
     @Transactional
-    public static Result register(){
+    public static Result register() {
         DynamicForm r = Form.form().bindFromRequest();
-        String nome, email,senha;
+        String nome, email, senha;
         nome = r.get("nome");
         email = r.get("email");
         senha = r.get("senha");
-        Usuario u = new Usuario(nome,email,senha,0);
-        if(Sistema.addUsuario(u)){
+        Usuario u = new Usuario(nome, email, senha, 0);
+        if (Sistema.addUsuario(u)) {
             return index();
         }
         return renderRegister();
     }
 
     @Transactional
-    public static Result renderListChamadasPendentesDoUsuario(int ind){
-        Logger.info("INDICE:"+ ind);
+    public static Result renderListChamadasPendentesDoUsuario(int ind) {
+        Logger.info("INDICE:" + ind);
         Usuario u = Sistema.getUsuario(session().get("email"));
         List<Chamada> l = Sistema.getListaChamadasPendentesDoUsuario(u);
-        if(l!=null && u!=null) {
+        if (l != null && u != null) {
             int resto = (l.size()) % 30;
             if (l.size() <= 30) {
-                return ok(dashUser.render(u,l));
+                return ok(dashUser.render(u, l));
             } else if (resto == 0 && ind != Sistema.getIndiceChamadasPendentesDoUsuario(u)) {
                 int ini = 30 * (ind - 1);
                 int k = ini + 30;
@@ -119,7 +126,7 @@ public class Application extends Controller {
                 for (int i = ini; i < k; i++) {
                     ln.add(l.get(i));
                 }
-                return ok(dashUser.render(u,ln));
+                return ok(dashUser.render(u, ln));
             } else if (resto != 0 && ind != Sistema.getIndiceChamadasPendentesDoUsuario(u)) {
                 int ini = 30 * (ind - 1);
                 int k = ini + 30;
@@ -127,7 +134,7 @@ public class Application extends Controller {
                 for (int i = ini; i < k; i++) {
                     ln.add(l.get(i));
                 }
-                return ok(dashUser.render(u,ln));
+                return ok(dashUser.render(u, ln));
             } else {
                 int ini = 30 * (ind - 1);
                 int k = ini + resto;
@@ -135,27 +142,27 @@ public class Application extends Controller {
                 for (int i = ini; i < k; i++) {
                     ln.add(l.get(i));
                 }
-                return ok(dashUser.render(u,ln));
+                return ok(dashUser.render(u, ln));
             }
         }
         return ok();
     }
 
     @Transactional
-    public static Result renderOperadores(){
+    public static Result renderOperadores() {
         Usuario u = Sistema.getUsuario(session().get("email"));
         return ok(dashAdminOperadores.render(u, Sistema.getListaGeralDeUsuarios()));
     }
 
     @Transactional
-    public static Result renderListChamadasGeralDoUsuario(int ind){
-        Logger.info("INDICE:"+ ind);
+    public static Result renderListChamadasGeralDoUsuario(int ind) {
+        Logger.info("INDICE:" + ind);
         Usuario u = Sistema.getUsuario(session().get("email"));
         List<Chamada> l = Sistema.getListaDeChamadasGeraldoUsuario(u);
-        if(l!=null && u!=null) {
+        if (l != null && u != null) {
             int resto = (l.size()) % 30;
             if (l.size() <= 30) {
-                return ok(dashUserListChamadas.render(u,l));
+                return ok(dashUserListChamadas.render(u, l));
             } else if (resto == 0 && ind != Sistema.getIndiceChamadasDoUsuario(u)) {
                 int ini = 30 * (ind - 1);
                 int k = ini + 30;
@@ -163,7 +170,7 @@ public class Application extends Controller {
                 for (int i = ini; i < k; i++) {
                     ln.add(l.get(i));
                 }
-                return ok(dashUserListChamadas.render(u,ln));
+                return ok(dashUserListChamadas.render(u, ln));
             } else if (resto != 0 && ind != Sistema.getIndiceChamadasDoUsuario(u)) {
                 int ini = 30 * (ind - 1);
                 int k = ini + 30;
@@ -171,7 +178,7 @@ public class Application extends Controller {
                 for (int i = ini; i < k; i++) {
                     ln.add(l.get(i));
                 }
-                return ok(dashUserListChamadas.render(u,ln));
+                return ok(dashUserListChamadas.render(u, ln));
             } else {
                 int ini = 30 * (ind - 1);
                 int k = ini + resto;
@@ -179,21 +186,21 @@ public class Application extends Controller {
                 for (int i = ini; i < k; i++) {
                     ln.add(l.get(i));
                 }
-                return ok(dashUserListChamadas.render(u,ln));
+                return ok(dashUserListChamadas.render(u, ln));
             }
         }
         return ok();
     }
 
     @Transactional
-    public static Result renderListChamadasGeralAdmin(int ind){
-        Logger.info("INDICE:"+ ind);
+    public static Result renderListChamadasGeralAdmin(int ind) {
+        Logger.info("INDICE:" + ind);
         Usuario u = Sistema.getUsuario(session().get("email"));
         List<Chamada> l = Sistema.getListaGeralDeChamadas();
-        if(l!=null && u!=null) {
+        if (l != null && u != null) {
             int resto = (l.size()) % 30;
             if (l.size() <= 30) {
-                return ok(dashAdminChamadas.render(u,l));
+                return ok(dashAdminChamadas.render(u, l));
             } else if (resto == 0 && ind != Sistema.getIndiceChamadasAdminTable()) {
                 int ini = 30 * (ind - 1);
                 int k = ini + 30;
@@ -201,7 +208,7 @@ public class Application extends Controller {
                 for (int i = ini; i < k; i++) {
                     ln.add(l.get(i));
                 }
-                return ok(dashAdminChamadas.render(u,ln));
+                return ok(dashAdminChamadas.render(u, ln));
             } else if (resto != 0 && ind != Sistema.getIndiceChamadasAdminTable()) {
                 int ini = 30 * (ind - 1);
                 int k = ini + 30;
@@ -209,7 +216,7 @@ public class Application extends Controller {
                 for (int i = ini; i < k; i++) {
                     ln.add(l.get(i));
                 }
-                return ok(dashAdminChamadas.render(u,ln));
+                return ok(dashAdminChamadas.render(u, ln));
             } else {
                 int ini = 30 * (ind - 1);
                 int k = ini + resto;
@@ -217,21 +224,21 @@ public class Application extends Controller {
                 for (int i = ini; i < k; i++) {
                     ln.add(l.get(i));
                 }
-                return ok(dashAdminChamadas.render(u,ln));
+                return ok(dashAdminChamadas.render(u, ln));
             }
         }
         return ok();
     }
 
     @Transactional
-    public static Result renderListClientesGeralAdmin(int ind){
-        Logger.info("INDICE:"+ ind);
+    public static Result renderListClientesGeralAdmin(int ind) {
+        Logger.info("INDICE:" + ind);
         Usuario u = Sistema.getUsuario(session().get("email"));
         List<Cliente> l = Sistema.getListaGeralDeClientes();
-        if(l!=null && u!=null) {
+        if (l != null && u != null) {
             int resto = (l.size()) % 30;
             if (l.size() <= 30) {
-                return ok(dashAdminClientes.render(u,l));
+                return ok(dashAdminClientes.render(u, l));
             } else if (resto == 0 && ind != Sistema.getIndiceClientesAdminTable()) {
                 int ini = 30 * (ind - 1);
                 int k = ini + 30;
@@ -239,7 +246,7 @@ public class Application extends Controller {
                 for (int i = ini; i < k; i++) {
                     ln.add(l.get(i));
                 }
-                return ok(dashAdminClientes.render(u,ln));
+                return ok(dashAdminClientes.render(u, ln));
             } else if (resto != 0 && ind != Sistema.getIndiceClientesAdminTable()) {
                 int ini = 30 * (ind - 1);
                 int k = ini + 30;
@@ -247,7 +254,7 @@ public class Application extends Controller {
                 for (int i = ini; i < k; i++) {
                     ln.add(l.get(i));
                 }
-                return ok(dashAdminClientes.render(u,ln));
+                return ok(dashAdminClientes.render(u, ln));
             } else {
                 int ini = 30 * (ind - 1);
                 int k = ini + resto;
@@ -255,25 +262,97 @@ public class Application extends Controller {
                 for (int i = ini; i < k; i++) {
                     ln.add(l.get(i));
                 }
-                return ok(dashAdminClientes.render(u,ln));
+                return ok(dashAdminClientes.render(u, ln));
             }
         }
         return ok();
     }
 
+    @Transactional
+    public static Result search() {
+        Usuario u = Sistema.getUsuario(session().get("email"));
+        DynamicForm r = Form.form().bindFromRequest();
+        String nome, cep, numero1, numero2, cpf;
+        nome = r.get("q");
+        cep = r.get("q");
+        numero1 = r.get("q");
+        numero2 = r.get("q");
+        cpf = r.get("q");
+
+        List<Cliente> lclientes = Sistema.getListaGeralDeClientes();
+        List<Chamada> lchamadas = Sistema.getListaDeChamadasGeraldoUsuario(u);
+
+        for (Cliente cliente : lclientes) {
+            if (cliente.getNome().contains(nome) || cliente.getNome().toLowerCase().contains(nome)) {
+                Long id = Sistema.getChamadaPorClienteID(cliente.getId()).getId();
+                return redirect("/chamadas/update/" + id);
+            }
+            if (cliente.getCep()!=null && cliente.getCep().equals(cep)) {
+                Long id = Sistema.getChamadaPorClienteID(cliente.getId()).getId();
+                return redirect("/chamadas/update/" + id);
+            }
+            if (cliente.getCpf()!=null && cliente.getCpf().equals(cpf)) {
+                Long id = Sistema.getChamadaPorClienteID(cliente.getId()).getId();
+                return redirect("/chamadas/update/" + id);
+            }
+            if (cliente.getNumero1()!=null && cliente.getNumero1().equals(numero1)) {
+                Long id = Sistema.getChamadaPorClienteID(cliente.getId()).getId();
+                return redirect("/chamadas/update/" + id);
+            }
+            if (cliente.getNumero2()!=null && cliente.getNumero2().equals(numero2)) {
+                Long id = Sistema.getChamadaPorClienteID(cliente.getId()).getId();
+                return redirect("/chamadas/update/" + id);
+            }
+        }
+        return renderError();
+
+    }
 
     @Transactional
-    public static Result renderAdd(){
+    public static Result renderAddPlano(){
+        Usuario u = Sistema.getUsuario(session().get("email"));
+        return ok(dashAdminAddPlano.render(u,Sistema.getListaDePlanos()));
+    }
+
+    @Transactional
+    public static Result addPlano(){
+        Usuario u = Sistema.getUsuario(session().get("email"));
+        DynamicForm r = Form.form().bindFromRequest();
+        String texto = r.get("plano");
+        String v = r.get("valor").replaceAll(",",".");
+        double valor = Double.parseDouble(v);
+        Sistema.addPlano(texto,valor);
+        return renderAddPlano();
+    }
+
+    @Transactional
+    public static Result removePlano(Long id){
+        Usuario u = Sistema.getUsuario(session().get("email"));
+        Sistema.removePlano(id);
+        return renderAddPlano();
+    }
+
+    @Transactional
+    public static Result renderError() {
+        Usuario u = Sistema.getUsuario(session().get("email"));
+        return ok(searcherror.render(u));
+    }
+
+
+    @Transactional
+    public static Result renderAdd() {
         Usuario u = Sistema.getUsuario(session().get("email"));
         return ok(dashUserAddChamada.render(u));
     }
 
     @Transactional
-    public static Result addChamada(){
+    public static Result addChamada() {
         Usuario u = Sistema.getUsuario(session().get("email"));
         DynamicForm r = Form.form().bindFromRequest();
         String nome = r.get("nome");
         String num1 = r.get("numero1");
+        String num2 = r.get("numero2");
+        String cep = r.get("cep");
         String end = r.get("endereco");
         String cid = r.get("cidade");
         String uf = r.get("uf");
@@ -286,19 +365,19 @@ public class Application extends Controller {
         String hora = r.get("hora");
         String hf = new Date().toLocaleString();
         int stat = Integer.parseInt(r.get("status"));
-        Sistema.addChamada(nome,num1,end,cid,uf,plan,nota,cpf,rg,hi,hf,stat,u,data,hora);
+        Sistema.addChamada(nome, num1, end, cid, uf, plan, nota, cpf, rg, hi, hf, stat, u, data, hora,cep);
         return renderListChamadasPendentesDoUsuario(1);
     }
 
     @Transactional
-    public static Result renderUpdateChamada(Long id){
+    public static Result renderUpdateChamada(Long id) {
         Usuario u = Sistema.getUsuario(session().get("email"));
         Chamada c = Sistema.getChamada(id);
-        return ok(dashUserUpdateChamada.render(u,c));
+        return ok(dashUserUpdateChamada.render(u, c));
     }
 
     @Transactional
-    public static Result updateChamada(){
+    public static Result updateChamada() {
         Usuario u = Sistema.getUsuario(session().get("email"));
         DynamicForm r = Form.form().bindFromRequest();
         String end = r.get("endereco");
@@ -309,10 +388,10 @@ public class Application extends Controller {
         String hora = r.get("hora");
         int stat = Integer.parseInt(r.get("status"));
         Long id = Long.parseLong(r.get("id"));
-        if(id!=null){
+        if (id != null) {
             Chamada c = Sistema.getChamada(id);
             Cliente cl = Sistema.getCliente(c.getIdCliente());
-            if(c!=null && cl!=null){
+            if (c != null && cl != null) {
                 c.setDataAgendamento(data);
                 c.setHoraAgendamento(hora);
                 c.setNota(nota);
@@ -328,9 +407,7 @@ public class Application extends Controller {
         return renderListChamadasPendentesDoUsuario(1);
 
 
-
     }
-
 
 
 }

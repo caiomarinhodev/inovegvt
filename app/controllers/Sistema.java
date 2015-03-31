@@ -71,6 +71,15 @@ public class Sistema {
     }
 
     @Transactional
+    public static Chamada getChamadaPorClienteID(Long idCliente) {
+        List<Chamada> l = dao.findByAttributeName(Chamada.class.getName(), "idCliente", String.valueOf(idCliente));
+        if (l.size() > 0) {
+            return l.get(0);
+        }
+        return null;
+    }
+
+    @Transactional
     public static boolean removeChamada(Long id) {
         Chamada c = getChamada(id);
         if (c != null) {
@@ -144,9 +153,9 @@ public class Sistema {
     @Transactional
     public static void addChamada(String nome, String num1, String endereco, String cidade, String uf, String plano,
                                   String nota, String cpf, String rg, String horainicial, String horafinal,
-                                  int status, Usuario operador, String dt, String h) {
+                                  int status, Usuario operador, String dt, String h, String cep) {
         Cliente cliente = new Cliente(nome, num1, null, null, endereco, cidade,
-                uf, plano, cpf, rg);
+                uf, plano, cpf, rg,cep);
         if (addCliente(cliente)) {
             Chamada c = new Chamada(cliente, nota, horainicial, horafinal, status, operador, new GregorianCalendar(), dt, h);
             addChamada(c);
@@ -379,6 +388,11 @@ public class Sistema {
             return l.get(0);
         }
         return null;
+    }
+
+    @Transactional
+    public static List<Plano> getListaDePlanos(){
+        return dao.findAllByClassName(Plano.class.getName());
     }
 
     @Transactional

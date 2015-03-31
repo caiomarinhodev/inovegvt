@@ -162,11 +162,32 @@
                                                 </div><!-- /.input group -->
                                             </div><!-- /.form group -->
 
+                                            <!-- phone mask -->
+                                            <div class="form-group">
+                                                <label>Telefone 2:</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-phone"></i>
+                                                    </div>
+                                                    <input name="numero2" type="text" class="form-control" data-inputmask='"mask": "(99) 9999-9999"' data-mask/>
+                                                </div><!-- /.input group -->
+                                            </div><!-- /.form group -->
                                             <!--<input name="numero1" type="text" class="form-control"
                                             placeholder="(DDD)8888-8888"/>-->
                                             <label>Endereço:</label>
                                             <input name="endereco" type="text" class="form-control"
                                             placeholder=""/>
+                                                <!-- phone mask -->
+                                            <div class="form-group">
+                                                <label>CEP:</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-compass"></i>
+                                                    </div>
+                                                    <input name="cep" type="text" class="form-control" data-inputmask='"mask": "99999-999"' data-mask/>
+                                                </div><!-- /.input group -->
+                                            </div><!-- /.form group -->
+
                                             <label>Cidade:</label>
                                             <input name="cidade" type="text" class="form-control"
                                             placeholder=""/>
@@ -221,9 +242,9 @@
                                             placeholder=""/>
                                             <label>Plano GVT:</label>
                                             <select class="form-control" name="plano">
-                                                <option>PLANO1</option>
-                                                <option>PLANO3</option>
-                                                <option>PLANO1</option>
+                                                @for(p<-Sistema.getListaDePlanos){
+                                                    <option>@p.getText</option>
+                                                }
                                             </select>
                                             <label>Status:</label>
                                             <select id="stat" class="form-control" name="status" onclick="f();">

@@ -36,14 +36,16 @@ public class Cliente {
     private String cpf;
     @Column
     private String rg;
+    @Column
+    private String cep;
 
-    public Cliente(){
+    public Cliente() {
 
     }
 
     public Cliente(String nome, String numero1,
                    String numero2, String celular, String endereco,
-                   String cidade, String uf, String planoGVT, String cpf, String rg) {
+                   String cidade, String uf, String planoGVT, String cpf, String rg, String cep) {
         this.nome = nome;
         this.numero1 = numero1;
         this.numero2 = numero2;
@@ -51,10 +53,19 @@ public class Cliente {
         this.endereco = endereco;
         this.cidade = cidade;
         this.uf = uf;
+        this.cep = cep;
         this.planoGVT = planoGVT;
         this.cpf = cpf;
         this.rg = rg;
         this.listaDeChamadas = new ArrayList<>();
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
     }
 
     public Long getId() {
