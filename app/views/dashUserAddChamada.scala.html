@@ -245,21 +245,21 @@
                                             <label>Plano GVT:</label>
                                             <div>
                                                 <div class="col-lg-4">
-                                                    <select class="form-control" name="plano">
+                                                    <select class="form-control" name="plano1">
                                                     @for(p <- Sistema.getPlanoInternet) {
                                                         <option>@p.getText</option>
                                                     }
                                                     </select>
                                                 </div>
                                                 <div class="col-lg-4">
-                                                    <select class="form-control" name="plano">
+                                                    <select class="form-control" name="plano2">
                                                     @for(p <- Sistema.getPlanoBL) {
                                                         <option>@p.getText</option>
                                                     }
                                                     </select>
                                                 </div>
                                                 <div class="col-lg-4">
-                                                    <select class="form-control" name="plano">
+                                                    <select class="form-control" name="plano3">
                                                     @for(p <- Sistema.getPlanoTV) {
                                                         <option>@p.getText</option>
                                                     }

@@ -358,7 +358,10 @@ public class Application extends Controller {
         String end = r.get("endereco");
         String cid = r.get("cidade");
         String uf = r.get("uf");
-        String plan = r.get("plano");
+        String plan1 = r.get("plano1");
+        String plan2 = r.get("plano2");
+        String plan3 = r.get("plano3");
+        String plan = plan1+" "+plan2+" "+plan3;
         String nota = r.get("notas");
         String cpf = r.get("cpf");
         String rg = r.get("rg");
