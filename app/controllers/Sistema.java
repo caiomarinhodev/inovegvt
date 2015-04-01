@@ -371,14 +371,27 @@ public class Sistema {
     }
 
     @Transactional
-    public static boolean addPlano(String text, double value) {
-        Plano p = new Plano(text, value);
+    public static boolean addPlano(String text, double value, int t) {
+        Plano p = new Plano(text, value, t);
         if (p != null) {
             dao.persist(p);
             dao.flush();
             return true;
         }
         return false;
+    }
+
+    @Transactional
+    public static List<Plano> getPlanoInternet(){
+        return dao.findByAttributeName(Plano.class.getName(),"tipo",String.valueOf(0));
+    }
+    @Transactional
+    public static List<Plano> getPlanoBL(){
+        return dao.findByAttributeName(Plano.class.getName(),"tipo",String.valueOf(1));
+    }
+    @Transactional
+    public static List<Plano> getPlanoTV(){
+        return dao.findByAttributeName(Plano.class.getName(),"tipo",String.valueOf(2));
     }
 
     @Transactional
@@ -436,6 +449,12 @@ public class Sistema {
     @Transactional
     public static void mergeChamada(Chamada c) {
         dao.merge(c);
+        dao.flush();
+    }
+
+    @Transactional
+    public static void mergeUsuario(Usuario u) {
+        dao.merge(u);
         dao.flush();
     }
 }

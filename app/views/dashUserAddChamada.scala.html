@@ -39,7 +39,6 @@
         }
         </style>
 
-
     </head>
 
     <body class="skin-yellow">
@@ -71,6 +70,11 @@
                                         <p>
                                         @usuario.getNome
                                         </p>
+                                    </li>
+                                    <li class="user-body">
+                                        <div class="text-center">
+                                            <a href="/trocarfoto"><span class="btn btn-danger" >Trocar Foto</span></a>
+                                        </div>
                                     </li>
                                         <!-- Menu Footer-->
                                     <li class="user-footer">
@@ -139,14 +143,12 @@
                     <div class="row">
 
                             <!-- right column -->
-                        <div class="col-lg-1"></div>
-
-                        <div class="col-lg-10">
+                        <div class="col-lg-12">
                                 <!-- general form elements disabled -->
                             <div class="box box-primary">
                                 <form action="/addchamada" method="post">
 
-                                    <div class="box-body col-md-5">
+                                    <div class="box-body col-md-6">
                                         <div class="form-group">
                                             <label>Nome:</label>
                                             <input name="nome" type="text" class="form-control"
@@ -159,8 +161,8 @@
                                                         <i class="fa fa-phone"></i>
                                                     </div>
                                                     <input name="numero1" type="text" class="form-control" data-inputmask='"mask": "(99) 9999-9999"' data-mask/>
-                                                </div><!-- /.input group -->
-                                            </div><!-- /.form group -->
+                                                </div> <!-- /.input group -->
+                                            </div> <!-- /.form group -->
 
                                             <!-- phone mask -->
                                             <div class="form-group">
@@ -170,8 +172,8 @@
                                                         <i class="fa fa-phone"></i>
                                                     </div>
                                                     <input name="numero2" type="text" class="form-control" data-inputmask='"mask": "(99) 9999-9999"' data-mask/>
-                                                </div><!-- /.input group -->
-                                            </div><!-- /.form group -->
+                                                </div> <!-- /.input group -->
+                                            </div> <!-- /.form group -->
                                             <!--<input name="numero1" type="text" class="form-control"
                                             placeholder="(DDD)8888-8888"/>-->
                                             <label>Endereço:</label>
@@ -185,8 +187,8 @@
                                                         <i class="fa fa-compass"></i>
                                                     </div>
                                                     <input name="cep" type="text" class="form-control" data-inputmask='"mask": "99999-999"' data-mask/>
-                                                </div><!-- /.input group -->
-                                            </div><!-- /.form group -->
+                                                </div> <!-- /.input group -->
+                                            </div> <!-- /.form group -->
 
                                             <label>Cidade:</label>
                                             <input name="cidade" type="text" class="form-control"
@@ -225,7 +227,7 @@
 
                                     </div>
 
-                                    <div class="box-body col-md-5">
+                                    <div class="box-body col-md-6">
                                         <div class="form-group">
                                                 <!-- cpf mask -->
                                             <div class="form-group">
@@ -235,19 +237,37 @@
                                                         <i class="fa fa-credit-card"></i>
                                                     </div>
                                                     <input name="cpf" type="text" class="form-control" data-inputmask='"mask": "999.999.999-99"' data-mask/>
-                                                </div><!-- /.input group -->
-                                            </div><!-- /.form group -->
+                                                </div> <!-- /.input group -->
+                                            </div> <!-- /.form group -->
                                             <label>RG:</label>
                                             <input name="rg" type="text" class="form-control"
                                             placeholder=""/>
                                             <label>Plano GVT:</label>
-                                            <select class="form-control" name="plano">
-                                                @for(p<-Sistema.getListaDePlanos){
-                                                    <option>@p.getText</option>
-                                                }
-                                            </select>
+                                            <div>
+                                                <div class="col-lg-4">
+                                                    <select class="form-control" name="plano">
+                                                    @for(p <- Sistema.getPlanoInternet) {
+                                                        <option>@p.getText</option>
+                                                    }
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <select class="form-control" name="plano">
+                                                    @for(p <- Sistema.getPlanoBL) {
+                                                        <option>@p.getText</option>
+                                                    }
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <select class="form-control" name="plano">
+                                                    @for(p <- Sistema.getPlanoTV) {
+                                                        <option>@p.getText</option>
+                                                    }
+                                                    </select>
+                                                </div>
+                                            </div>
                                             <label>Status:</label>
-                                            <select id="stat" class="form-control" name="status" onclick="f();">
+                                            <select id="stat" class="form-control" name="status" onclick="f ( ) ;">
                                                 <option value=0>ABERTO</option>
                                                 <option value=1>AGENDADO</option>
                                                 <option value=2>EM NEGOCIAÇÃO</option>
@@ -291,7 +311,6 @@
 
                                 <!-- /.box-body -->
                         </div>
-                        <div class="col-lg-1"></div>
                             <!-- /.box -->
                     </div>
 
@@ -333,69 +352,68 @@
 
 
 
-        <!-- Page script -->
+            <!-- Page script -->
         <script type="text/javascript">
-        $(function () {
+        $ ( function ( ) {
         //Datemask dd/mm/yyyy
-        $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+        $ ( "#datemask" ).inputmask ( "dd/mm/yyyy", { "placeholder" : "dd/mm/yyyy" } ) ;
         //Datemask2 mm/dd/yyyy
-        $("#datemask2").inputmask("mm/dd/yyyy", {"placeholder": "mm/dd/yyyy"});
+        $ ( "#datemask2" ).inputmask ( "mm/dd/yyyy", { "placeholder" : "mm/dd/yyyy" } ) ;
         //Money Euro
-        $("[data-mask]").inputmask();
+        $ ( "[data-mask]" ).inputmask ( ) ;
 
         //Date range picker
-        $('#reservation').daterangepicker();
+        $ ( '#reservation' ).daterangepicker ( ) ;
         //Date range picker with time picker
-        $('#reservationtime').daterangepicker({timePicker: true, timePickerIncrement: 30, format: 'MM/DD/YYYY h:mm A'});
+        $ ( '#reservationtime' ).daterangepicker ( { timePicker : true, timePickerIncrement : 30, format : 'MM/DD/YYYY h:mm A' } ) ;
         //Date range as a button
-        $('#daterange-btn').daterangepicker(
-        {
-        ranges: {
-        'Today': [moment(), moment()],
-        'Yesterday': [moment().subtract('days', 1), moment().subtract('days', 1)],
-        'Last 7 Days': [moment().subtract('days', 6), moment()],
-        'Last 30 Days': [moment().subtract('days', 29), moment()],
-        'This Month': [moment().startOf('month'), moment().endOf('month')],
-        'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
+        $ ( '#daterange-btn' ).daterangepicker ( {
+        ranges : {
+        'Today' :[ moment ( ), moment ( ) ],
+        'Yesterday' :[ moment ( ).subtract ( 'days', 1 ), moment ( ).subtract ( 'days', 1 ) ],
+        'Last 7 Days' :[ moment ( ).subtract ( 'days', 6 ), moment ( ) ],
+        'Last 30 Days' :[ moment ( ).subtract ( 'days', 29 ), moment ( ) ],
+        'This Month' :[ moment ( ).startOf ( 'month' ), moment ( ).endOf ( 'month' ) ],
+        'Last Month' :[ moment ( ).subtract ( 'month', 1 ).startOf ( 'month' ), moment ( ).subtract ( 'month', 1 ).endOf ( 'month' ) ]
         },
-        startDate: moment().subtract('days', 29),
-        endDate: moment()
+        startDate : moment ( ).subtract ( 'days', 29 ),
+        endDate : moment ( )
         },
-        function (start, end) {
-        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        function ( start, end ) {
+        $ ( '#reportrange span' ).html ( start.format ( 'MMMM D, YYYY' ) + ' - ' + end.format ( 'MMMM D, YYYY' ) ) ;
         }
-        );
+        ) ;
 
         //iCheck for checkbox and radio inputs
-        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-        checkboxClass: 'icheckbox_minimal-blue',
-        radioClass: 'iradio_minimal-blue'
-        });
+        $ ( 'input[type="checkbox"].minimal, input[type="radio"].minimal' ).iCheck ( {
+        checkboxClass : 'icheckbox_minimal-blue',
+        radioClass : 'iradio_minimal-blue'
+        } ) ;
         //Red color scheme for iCheck
-        $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
-        checkboxClass: 'icheckbox_minimal-red',
-        radioClass: 'iradio_minimal-red'
-        });
+        $ ( 'input[type="checkbox"].minimal-red, input[type="radio"].minimal-red' ).iCheck ( {
+        checkboxClass : 'icheckbox_minimal-red',
+        radioClass : 'iradio_minimal-red'
+        } ) ;
         //Flat red color scheme for iCheck
-        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
-        checkboxClass: 'icheckbox_flat-green',
-        radioClass: 'iradio_flat-green'
-        });
+        $ ( 'input[type="checkbox"].flat-red, input[type="radio"].flat-red' ).iCheck ( {
+        checkboxClass : 'icheckbox_flat-green',
+        radioClass : 'iradio_flat-green'
+        } ) ;
 
         //Colorpicker
-        $(".my-colorpicker1").colorpicker();
+        $ ( ".my-colorpicker1" ).colorpicker ( ) ;
         //color picker with addon
-        $(".my-colorpicker2").colorpicker();
+        $ ( ".my-colorpicker2" ).colorpicker ( ) ;
 
         //Timepicker
-        $("#timepicker").timepicker({
-        showInputs: false
-        });
-        });
+        $ ( "#timepicker" ).timepicker ( {
+        showInputs : false
+        } ) ;
+        } ) ;
         </script>
 
         <script type="text/javascript">
-        function f(){
+        function f ( ) {
         var v = $ ( '#stat' ).val ( ) ;
         console.log ( v ) ;
         if ( v == 1 ) {

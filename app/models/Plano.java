@@ -16,14 +16,25 @@ public class Plano {
     private String text;
     @Column
     private double value;
+    @Column
+    private int tipo;
 
-    public Plano(){
+    public Plano() {
 
     }
 
-    public Plano(String text, double value) {
+    public Plano(String text, double value, int tipo) {
         this.text = text;
         this.value = value;
+        this.tipo = tipo;
+    }
+
+    public int getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
     }
 
     public Long getId() {

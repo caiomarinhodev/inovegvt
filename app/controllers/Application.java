@@ -321,8 +321,9 @@ public class Application extends Controller {
         DynamicForm r = Form.form().bindFromRequest();
         String texto = r.get("plano");
         String v = r.get("valor").replaceAll(",",".");
+        String t = r.get("tipo");
         double valor = Double.parseDouble(v);
-        Sistema.addPlano(texto,valor);
+        Sistema.addPlano(texto,valor, Integer.parseInt(t));
         return renderAddPlano();
     }
 
@@ -425,6 +426,29 @@ public class Application extends Controller {
         Usuario u = Sistema.getUsuario(session().get("email"));
         Sistema.removeUsuario(id);
         return renderUsersControl();
+    }
+
+    @Transactional
+    public static Result renderTrocarfoto(){
+        Usuario u = Sistema.getUsuario(session().get("email"));
+        return ok(dashTrocarFoto.render(u));
+    }
+
+    @Transactional
+    public static Result trocarFoto(){
+        Usuario u = Sistema.getUsuario(session().get("email"));
+        DynamicForm r = Form.form().bindFromRequest();
+        String url = r.get("foto");
+        if(url!=null && url!=""){
+            u.setUrl_foto(url);
+            Sistema.mergeUsuario(u);
+            if(u.getTipo()==1){
+                return renderListChamadasGeralAdmin(1);
+            }else{
+                return renderListChamadasPendentesDoUsuario(1);
+            }
+        }
+        return renderTrocarfoto();
     }
 
 
