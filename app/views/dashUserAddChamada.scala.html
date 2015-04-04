@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>INOVE | Dashboard</title>
+        <title>@Sistema.getNomeDaEmpresa | Dashboard</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
             <!-- Bootstrap 3.3.2 -->
         <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -46,7 +46,7 @@
 
             <header class="main-header">
                     <!-- Logo -->
-                <a href="#" class="logo"><b>INOVE</b></a>
+                <a href="#" class="logo"><b>@Sistema.getNomeDaEmpresa</b></a>
                     <!-- Header Navbar: style can be found in header.less -->
                 <nav class="navbar navbar-static-top" role="navigation">
                         <!-- Sidebar toggle button-->
@@ -118,6 +118,9 @@
                             Add Chamada</a>
                         </li>
                         <li><a href="/chamadas/list/1"><i class="fa fa-phone text-info"></i> Chamadas</a></li>
+                        <li><a href="/recados/inbox/1"><i class="fa fa-comments text-purple"></i>
+                            Recados</a>
+                        </li>
                     </ul>
                 </section>
                     <!-- /.sidebar -->
@@ -242,29 +245,13 @@
                                             <label>RG:</label>
                                             <input name="rg" type="text" class="form-control"
                                             placeholder=""/>
-                                            <label>Plano GVT:</label>
+                                            <label>Produto:</label>
                                             <div>
-                                                <div class="col-lg-4">
-                                                    <select class="form-control" name="plano1">
-                                                    @for(p <- Sistema.getPlanoInternet) {
-                                                        <option>@p.getText</option>
-                                                    }
-                                                    </select>
-                                                </div>
-                                                <div class="col-lg-4">
-                                                    <select class="form-control" name="plano2">
-                                                    @for(p <- Sistema.getPlanoBL) {
-                                                        <option>@p.getText</option>
-                                                    }
-                                                    </select>
-                                                </div>
-                                                <div class="col-lg-4">
-                                                    <select class="form-control" name="plano3">
-                                                    @for(p <- Sistema.getPlanoTV) {
-                                                        <option>@p.getText</option>
-                                                    }
-                                                    </select>
-                                                </div>
+                                                <select class="form-control" name="plano">
+                                                @for(p <- Sistema.getListaDePlanos) {
+                                                    <option>@p.getText</option>
+                                                }
+                                                </select>
                                             </div>
                                             <label>Status:</label>
                                             <select id="stat" class="form-control" name="status" onclick="f ( ) ;">
@@ -272,7 +259,7 @@
                                                 <option value=1>AGENDADO</option>
                                                 <option value=2>EM NEGOCIAÇÃO</option>
                                                 <option value=3>NÃO ATENDIDO</option>
-                                                <option value=4>CLIENTE GVT SATISFEITO</option>
+                                                <option value=4>CLIENTE SATISFEITO</option>
                                                 <option value=5>SATISFEITO CONCORRENCIA</option>
                                                 <option value=6>SOS</option>
                                                 <option value=7>REJEITADO</option>

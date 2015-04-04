@@ -22,6 +22,118 @@ public class Sistema {
     }
 
     @Transactional
+    public static Recado getRecado(Long id){
+        List<Recado> l = dao.findByAttributeName(Recado.class.getName(), "id", String.valueOf(id));
+        if(l.size()>0){
+            return l.get(0);
+        }
+        return null;
+    }
+
+    @Transactional
+    public static List<Recado> getListaDeRecadosGeral(){
+        return dao.findAllByClassName(Recado.class.getName());
+    }
+
+    @Transactional
+    public static void addRecado(Recado r){
+        if(r!=null){
+            dao.persist(r);
+            dao.flush();
+        }
+    }
+
+    @Transactional
+    public static void removeRecado(Long id){
+        Recado r = getRecado(id);
+        if(r!=null){
+            dao.remove(r);
+            dao.flush();
+        }
+    }
+
+    @Transactional
+    public static boolean setStatusRecado(Long id, int stats){
+        Recado r = getRecado(id);
+        if(r!=null){
+            r.setStatus(stats);
+            dao.merge(r);
+            dao.flush();
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional
+    public static boolean setTipoRecado(Long id, int tipo){
+        Recado r = getRecado(id);
+        if(r!=null){
+            r.setTipo(tipo);
+            dao.merge(r);
+            dao.flush();
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional
+     public static List<Recado> getListaDeRecadosInboxDoUsuario(Usuario u){
+        return dao.findByAttributeName(Recado.class.getName(),"idReceptor",String.valueOf(u.getId()));
+    }
+
+    @Transactional
+    public static List<Recado> getListaDeRecadosEnviadosDoUsuario(Usuario u){
+        return dao.findByAttributeName(Recado.class.getName(),"idAutor",String.valueOf(u.getId()));
+    }
+
+    @Transactional
+    public static int newMensagensCounter(Usuario u){
+        List<Recado> l = getListaDeRecadosInboxDoUsuario(u);
+        List<Recado> li = new ArrayList<>();
+        for(Recado re: l){
+            if(re.getStatus()==0){
+                li.add(re);
+            }
+        }
+        return li.size();
+    }
+
+    public static String getNomeDaEmpresa(){
+        return "Sua Empresa";
+    }
+
+    @Transactional
+    public static int getIndiceRecadosInbox(Usuario u) {
+        List<Recado> l = getListaDeRecadosInboxDoUsuario(u);
+        int total = l.size();
+        int resto = total % 30;
+        float conta = ((float) l.size()) / (float) 30;
+        if (conta > 1 && resto == 0) {
+            return (l.size() / 30);
+        } else if (conta > 1 && resto != 0) {
+            return (l.size() / 30) + 1;
+        } else {
+            return 1;
+        }
+    }
+
+    @Transactional
+    public static int getIndiceRecadosEnviados(Usuario u) {
+        List<Recado> l = getListaDeRecadosEnviadosDoUsuario(u);
+        int total = l.size();
+        int resto = total % 30;
+        float conta = ((float) l.size()) / (float) 30;
+        if (conta > 1 && resto == 0) {
+            return (l.size() / 30);
+        } else if (conta > 1 && resto != 0) {
+            return (l.size() / 30) + 1;
+        } else {
+            return 1;
+        }
+    }
+
+
+    @Transactional
     public static Usuario getUsuario(String email) {
         List<Usuario> l = dao.findByAttributeName(Usuario.class.getName(), "email", email);
         if (l.size() > 0) {

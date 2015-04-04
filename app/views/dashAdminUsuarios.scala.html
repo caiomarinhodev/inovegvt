@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>INOVE | Dashboard</title>
+        <title>@Sistema.getNomeDaEmpresa | Dashboard</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
             <!-- Bootstrap 3.3.2 -->
         <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -33,7 +33,7 @@
 
             <header class="main-header">
                     <!-- Logo -->
-                <a href="#" class="logo"><b>INOVE</b></a>
+                <a href="#" class="logo"><b>@Sistema.getNomeDaEmpresa</b></a>
                     <!-- Header Navbar: style can be found in header.less -->
                 <nav class="navbar navbar-static-top" role="navigation">
                         <!-- Sidebar toggle button-->
@@ -97,8 +97,9 @@
                         <li><a href="/admin/clientes/1"><i class="fa fa-bar-chart-o text-warning"></i>Clientes</a></li>
                         <li><a href="/admin/operadores"><i class="fa fa-rocket text-info"></i>Operadores</a></li>
                         <li><a href="/admin/add"><i class="fa fa-plus-square text-danger"></i>
-                            Add Plano</a></li>
+                            Add Produto</a></li>
                         <li class="active treeview"><a href="/admin/users"><i class="fa fa-users"></i>Usuários</a> </li>
+                        <li><a href="/admin/recados/inbox/1"><i class="fa fa-comments text-purple"></i>Recados</a></li>
                     </ul>
                 </section>
                     <!-- /.sidebar -->
@@ -233,7 +234,7 @@
                                 <span class="info-box-icon"><i class="ion-ios-chatbubble-outline"></i></span>
                                 <div class="info-box-content">
                                     <span class="info-box-text">Direct Messages</span>
-                                    <span class="info-box-number">163,921</span>
+                                    <span class="info-box-number">@Sistema.getListaDeRecadosGeral.size()</span>
                                     <div class="progress">
                                         <div class="progress-bar" style="width : 40 %"></div>
                                     </div>

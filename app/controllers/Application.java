@@ -1,9 +1,6 @@
 package controllers;
 
-import models.Chamada;
-import models.Cliente;
-import models.Plano;
-import models.Usuario;
+import models.*;
 import play.*;
 import play.data.DynamicForm;
 import play.data.Form;
@@ -113,7 +110,6 @@ public class Application extends Controller {
 
     @Transactional
     public static Result renderListChamadasPendentesDoUsuario(int ind) {
-        Logger.info("INDICE:" + ind);
         Usuario u = Sistema.getUsuario(session().get("email"));
         List<Chamada> l = Sistema.getListaChamadasPendentesDoUsuario(u);
         if (l != null && u != null) {
@@ -157,7 +153,6 @@ public class Application extends Controller {
 
     @Transactional
     public static Result renderListChamadasGeralDoUsuario(int ind) {
-        Logger.info("INDICE:" + ind);
         Usuario u = Sistema.getUsuario(session().get("email"));
         List<Chamada> l = Sistema.getListaDeChamadasGeraldoUsuario(u);
         if (l != null && u != null) {
@@ -195,7 +190,6 @@ public class Application extends Controller {
 
     @Transactional
     public static Result renderListChamadasGeralAdmin(int ind) {
-        Logger.info("INDICE:" + ind);
         Usuario u = Sistema.getUsuario(session().get("email"));
         List<Chamada> l = Sistema.getListaGeralDeChamadas();
         if (l != null && u != null) {
@@ -233,7 +227,6 @@ public class Application extends Controller {
 
     @Transactional
     public static Result renderListClientesGeralAdmin(int ind) {
-        Logger.info("INDICE:" + ind);
         Usuario u = Sistema.getUsuario(session().get("email"));
         List<Cliente> l = Sistema.getListaGeralDeClientes();
         if (l != null && u != null) {
@@ -321,9 +314,8 @@ public class Application extends Controller {
         DynamicForm r = Form.form().bindFromRequest();
         String texto = r.get("plano");
         String v = r.get("valor").replaceAll(",",".");
-        String t = r.get("tipo");
         double valor = Double.parseDouble(v);
-        Sistema.addPlano(texto,valor, Integer.parseInt(t));
+        Sistema.addPlano(texto,valor,0);
         return renderAddPlano();
     }
 
@@ -358,10 +350,7 @@ public class Application extends Controller {
         String end = r.get("endereco");
         String cid = r.get("cidade");
         String uf = r.get("uf");
-        String plan1 = r.get("plano1");
-        String plan2 = r.get("plano2");
-        String plan3 = r.get("plano3");
-        String plan = plan1+" "+plan2+" "+plan3;
+        String plan = r.get("plano");
         String nota = r.get("notas");
         String cpf = r.get("cpf");
         String rg = r.get("rg");
@@ -453,6 +442,194 @@ public class Application extends Controller {
         }
         return renderTrocarfoto();
     }
+
+    @Transactional
+    public static Result renderRecadosInboxUsuario(int ind) {
+        Usuario u = Sistema.getUsuario(session().get("email"));
+        List<Recado> l = Sistema.getListaDeRecadosInboxDoUsuario(u);
+        if (l != null && u != null) {
+            int resto = (l.size()) % 30;
+            if (l.size() <= 30) {
+                return ok(dashUserMailbox.render(u,l));
+            } else if (resto == 0 && ind != Sistema.getIndiceRecadosInbox(u)) {
+                int ini = 30 * (ind - 1);
+                int k = ini + 30;
+                List<Recado> ln = new ArrayList<>();
+                for (int i = ini; i < k; i++) {
+                    ln.add(l.get(i));
+                }
+                return ok(dashUserMailbox.render(u,ln));
+            } else if (resto != 0 && ind != Sistema.getIndiceRecadosInbox(u)) {
+                int ini = 30 * (ind - 1);
+                int k = ini + 30;
+                List<Recado> ln = new ArrayList<>();
+                for (int i = ini; i < k; i++) {
+                    ln.add(l.get(i));
+                }
+                return ok(dashUserMailbox.render(u,ln));
+            } else {
+                int ini = 30 * (ind - 1);
+                int k = ini + resto;
+                List<Recado> ln = new ArrayList<>();
+                for (int i = ini; i < k; i++) {
+                    ln.add(l.get(i));
+                }
+                return ok(dashUserMailbox.render(u,ln));
+            }
+        }
+        return ok();
+    }
+
+    @Transactional
+    public static Result renderRecadosEnviadosUsuario(int ind) {
+        Usuario u = Sistema.getUsuario(session().get("email"));
+        List<Recado> l = Sistema.getListaDeRecadosEnviadosDoUsuario(u);
+        if (l != null && u != null) {
+            int resto = (l.size()) % 30;
+            if (l.size() <= 30) {
+                return ok();
+            } else if (resto == 0 && ind != Sistema.getIndiceRecadosEnviados(u)) {
+                int ini = 30 * (ind - 1);
+                int k = ini + 30;
+                List<Recado> ln = new ArrayList<>();
+                for (int i = ini; i < k; i++) {
+                    ln.add(l.get(i));
+                }
+                return ok();
+            } else if (resto != 0 && ind != Sistema.getIndiceRecadosEnviados(u)) {
+                int ini = 30 * (ind - 1);
+                int k = ini + 30;
+                List<Recado> ln = new ArrayList<>();
+                for (int i = ini; i < k; i++) {
+                    ln.add(l.get(i));
+                }
+                return ok();
+            } else {
+                int ini = 30 * (ind - 1);
+                int k = ini + resto;
+                List<Recado> ln = new ArrayList<>();
+                for (int i = ini; i < k; i++) {
+                    ln.add(l.get(i));
+                }
+                return ok();
+            }
+        }
+        return ok();
+    }
+
+
+    @Transactional
+    public static Result renderComposerRecado(){
+        Usuario u = Sistema.getUsuario(session().get("email"));
+        return ok(dashUserComposeRecado.render(u));
+    }
+
+    @Transactional
+    public static Result composerRecado(){
+        Usuario u = Sistema.getUsuario(session().get("email"));
+        DynamicForm r = Form.form().bindFromRequest();
+        Long idr = Long.parseLong(r.get("receptor"));
+        String rec = r.get("mensagem");
+        String titulo = r.get("titulo");
+        int stats = 0;
+        int tipo = 0;
+        Recado recado = new Recado(u.getId(),idr,titulo,rec,stats,tipo);
+        Sistema.addRecado(recado);
+        return renderRecadosInboxUsuario(1);
+    }
+
+    @Transactional
+    public static Result lerRecado(Long id){
+        Usuario u = Sistema.getUsuario(session().get("email"));
+        Recado re = Sistema.getRecado(id);
+        Sistema.setStatusRecado(id,1);
+        if(re!=null){
+            return ok(dashUserReadMail.render(u,re));
+        }
+        return renderRecadosInboxUsuario(1);
+    }
+
+    @Transactional
+    public static Result deleteRecado(Long id){
+        Sistema.removeRecado(id);
+        return renderRecadosInboxUsuario(1);
+    }
+
+    @Transactional
+    public static Result renderRecadosInboxAdmin(int ind) {
+        Usuario u = Sistema.getUsuario(session().get("email"));
+        List<Recado> l = Sistema.getListaDeRecadosInboxDoUsuario(u);
+        if (l != null && u != null) {
+            int resto = (l.size()) % 30;
+            if (l.size() <= 30) {
+                return ok(dashAdminMailbox.render(u,l));
+            } else if (resto == 0 && ind != Sistema.getIndiceRecadosInbox(u)) {
+                int ini = 30 * (ind - 1);
+                int k = ini + 30;
+                List<Recado> ln = new ArrayList<>();
+                for (int i = ini; i < k; i++) {
+                    ln.add(l.get(i));
+                }
+                return ok(dashAdminMailbox.render(u,ln));
+            } else if (resto != 0 && ind != Sistema.getIndiceRecadosInbox(u)) {
+                int ini = 30 * (ind - 1);
+                int k = ini + 30;
+                List<Recado> ln = new ArrayList<>();
+                for (int i = ini; i < k; i++) {
+                    ln.add(l.get(i));
+                }
+                return ok(dashAdminMailbox.render(u,ln));
+            } else {
+                int ini = 30 * (ind - 1);
+                int k = ini + resto;
+                List<Recado> ln = new ArrayList<>();
+                for (int i = ini; i < k; i++) {
+                    ln.add(l.get(i));
+                }
+                return ok(dashAdminMailbox.render(u,ln));
+            }
+        }
+        return ok();
+    }
+
+    @Transactional
+    public static Result renderComposerRecadoAdmin(){
+        Usuario u = Sistema.getUsuario(session().get("email"));
+        return ok(dashAdminComposeRecado.render(u));
+    }
+
+    @Transactional
+    public static Result composerRecadoAdmin(){
+        Usuario u = Sistema.getUsuario(session().get("email"));
+        DynamicForm r = Form.form().bindFromRequest();
+        Long idr = Long.parseLong(r.get("receptor"));
+        String rec = r.get("mensagem");
+        String titulo = r.get("titulo");
+        int stats = 0;
+        int tipo = 0;
+        Recado recado = new Recado(u.getId(),idr,titulo,rec,stats,tipo);
+        Sistema.addRecado(recado);
+        return renderRecadosInboxAdmin(1);
+    }
+
+    @Transactional
+    public static Result lerRecadoAdmin(Long id){
+        Usuario u = Sistema.getUsuario(session().get("email"));
+        Recado re = Sistema.getRecado(id);
+        Sistema.setStatusRecado(id,1);
+        if(re!=null){
+            return ok(dashAdminReadMail.render(u,re));
+        }
+        return renderRecadosInboxAdmin(1);
+    }
+
+    @Transactional
+    public static Result deleteRecadoAdmin(Long id){
+        Sistema.removeRecado(id);
+        return renderRecadosInboxAdmin(1);
+    }
+
+    //Sistema de recados nao possui lixeira, apenas Inbox e Enviados.
 
 
 }

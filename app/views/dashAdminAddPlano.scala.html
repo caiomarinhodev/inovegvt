@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>INOVE | Dashboard</title>
+        <title>@Sistema.getNomeDaEmpresa | Dashboard</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
             <!-- Bootstrap 3.3.2 -->
         <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -33,7 +33,7 @@
 
             <header class="main-header">
                     <!-- Logo -->
-                <a href="#" class="logo"><b>INOVE</b></a>
+                <a href="#" class="logo"><b>@Sistema.getNomeDaEmpresa</b></a>
                     <!-- Header Navbar: style can be found in header.less -->
                 <nav class="navbar navbar-static-top" role="navigation">
                         <!-- Sidebar toggle button-->
@@ -97,8 +97,9 @@
                         <li><a href="/admin/clientes/1"><i class="fa fa-bar-chart-o text-warning"></i>Clientes</a></li>
                         <li><a href="/admin/operadores"><i class="fa fa-rocket text-info"></i>Operadores</a></li>
                         <li class="active treeview"><a href="/admin/add"><i class="fa fa-plus-square text-danger"></i>
-                            Add Plano</a></li>
+                            Add Produto</a></li>
                         <li><a href="/admin/users"><i class="fa fa-users"></i>Usuários</a> </li>
+                        <li><a href="/admin/recados/inbox/1"><i class="fa fa-comments text-purple"></i>Recados</a></li>
                     </ul>
                 </section>
                     <!-- /.sidebar -->
@@ -110,11 +111,11 @@
                 <section class="content-header">
                     <h1>
                         Dashboard
-                        <small>Adicionar Plano</small>
+                        <small>Adicionar Produto</small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                        <li class="active">Add Plano</li>
+                        <li class="active">Add Produto</li>
                     </ol>
                 </section>
 
@@ -126,28 +127,19 @@
                             <!-- general form elements -->
                         <div class="box box-primary">
                             <div class="box-header">
-                                <h3 class="box-title">Adicionar Plano</h3>
+                                <h3 class="box-title">Adicionar Produto</h3>
                             </div><!-- /.box-header -->
                             <!-- form start -->
                             <form action="/admin/add/plano" method="post">
                                 <div class="box-body">
                                     <div class="form-group">
-                                        <label>Plano:</label>
+                                        <label>Produto:</label>
                                         <input name="plano" type="text" class="form-control" placeholder="Digite aqui o seu plano...">
                                     </div>
                                     <div class="form-group">
                                         <label>Valor:</label>
                                         <input name="valor" type="text" class="form-control" placeholder="129,90">
                                     </div>
-                                    <div class="form-group">
-                                        <label>Tipo:</label>
-                                        <select name="tipo" class="form-control">
-                                            <option value="0">FIXO</option>
-                                            <option value="1">BANDA LARGA</option>
-                                            <option value="2">TV</option>
-                                        </select>
-                                    </div>
-
                                 </div><!-- /.box-body -->
 
                                 <div class="box-footer">
@@ -161,14 +153,14 @@
                         <div class="">
                             <div class="box">
                                 <div class="box-header">
-                                    <h3 class="box-title">Tabela de Planos</h3>
+                                    <h3 class="box-title">Tabela de Produtos</h3>
                                 </div>
                                     <!-- /.box-header -->
                                 <div class="box-body no-padding">
                                     <table class="table table-striped">
                                         <tr>
                                             <th style="width: 10px">#</th>
-                                            <th>Plano</th>
+                                            <th>Produto</th>
                                             <th>Valor</th>
                                             <th style="width: 15px">?</th>
                                         </tr>
